@@ -1,45 +1,120 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+<h1 align="center">Event Scheduler</h1>
 
-Welcome elainebroche-dev,
+[View the live project here](https:// to be written)
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use.
+To be written
 
-## Gitpod Reminders
+![Mockup](documentation/images/resp-mockup.png)
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+## Index – Table of Contents
+* [User Experience (UX)](#user-experience-ux) 
+* [Features](#features)
+* [Design](#design)
+* [Technologies Used](#technologies-used)
+* [Testing](#testing)
+* [Deployment](#deployment)
+* [Credits](#credits)
 
-`python3 -m http.server`
+## User Experience (UX)
 
-A blue button should appear to click: *Make Public*,
+-   ### User stories - as a user I want to be able to :
 
-Another blue button should appear to click: *Open Browser*.
+1. To be written
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+## Features
 
-A blue button should appear to click: *Make Public*,
+### Existing Features
 
-Another blue button should appear to click: *Open Browser*.
+-   __F01 To be written__
+    - To be written
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+      ![To be written](documentation/images/f01-to be written)
 
-## Updates Since The Instructional Video
+- __How these features support the User Stories__
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+    - The User Stories in the [User Experience (UX)](#user-experience-ux) part of this document are numbered ??????.  The existing features are listed above as F01 to F?????.  Below is a traceability matrix cross-referencing the user stories with the features, illustrating which features support which stories :
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+        ![User Story Feature Matrix](documentation/images/to be written)
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+### Features which could be implemented in the future
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
+- __To be written__
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+## Design
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+-   ### Flow Charts
+    - To be written
+    
+## Technologies Used
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+### Languages Used
 
---------
+-   [?????](to be written)
 
-Happy coding!
+### Frameworks, Libraries & Programs Used
+
+-   [??????](to be written) 
+-   [Git:](https://git-scm.com/) was used for version control by utilising the Gitpod terminal to commit to Git and Push to GitHub.
+-   [GitHub:](https://github.com/) is used as the respository for the projects code after being pushed from Git.
+
+## Testing
+
+### Validator Testing 
+
+- [????](to be written)
+
+    - result for ?????
+      ![??????](documentation/validation/to be written)
+    
+### Test Cases and Results
+
+- The below table details the test cases that were used, the results and a cross-reference to the Feature ID that each test case exercised (click to open image):
+
+  <details>
+    <summary>Test Cases</summary>
+
+    ![Test Cases](documentation/images/to be written)
+  </details>
+  
+
+### Known bugs
+
+- to be written
+
+## Deployment
+
+### How this site was deployed - to be written
+
+- to be written
+
+  The live link can be found here - [???????](to be written) 
+
+### How to clone the repository - to be written
+
+- Go to the https://github.com/elainebroche-dev/ms2-anagram repository on GitHub 
+- Click the "Code" button to the right of the screen, click HTTPs and copy the link there
+- Open a GitBash terminal and navigate to the directory where you want to locate the clone
+- On the command line, type "git clone" then paste in the copied url and press the Enter key to begin the clone process
+- Changes made to the local clone can be pushed back to the repository using the following commands :
+
+  - git add *filenames*  (or "." to add all changed files)
+  - git commit -m *"text message describing changes"*
+  - git push
+
+- N.B. Any changes pushed to the master branch will take effect on the live project
+
+## Credits 
+
+### Content 
+- To be written
+
+### Code 
+- To be written
+
+### Media 
+- To be written
+
+### Acknowledgments
+
+- To be written

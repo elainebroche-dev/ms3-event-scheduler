@@ -59,8 +59,10 @@ To be written
 ### Frameworks, Libraries & Programs Used
 
 -   [Google Spreadsheets](https://en.wikipedia.org/wiki/Google_Sheets) used as the external data store for the Events and Bookings data used by the project.
--   [Google Drive API](https://developers.google.com/drive/api/v3/about-sdk) was used to generate credentials used in the project to securely access the Google Spreadsheet. 
--   [Google Sheets API](https://developers.google.com/sheets/api) was used to support interactions (e.g. read/write functionality) between the code and data stored in the Google Spreadsheet.
+-   [Google Drive API](https://developers.google.com/drive/api/v3/about-sdk) used to generate credentials used in the project to securely access the Google Spreadsheet. 
+-   [Google Sheets API](https://developers.google.com/sheets/api) used to support interactions (e.g. read/write functionality) between the code and data stored in the Google Spreadsheet.
+-   [gspread](https://docs.gspread.org/en/latest/) Python API for Google Sheets
+-   [Google Auth](https://google-auth.readthedocs.io/en/master/) Google authentication library for Python required to use the credentials generated for Google Drive API
 -   [Google Drawings](https://en.wikipedia.org/wiki/Google_Drawings) used to create the flowcharts outlining the functionality of the project.
 -   [Git:](https://git-scm.com/) was used for version control by utilising the Gitpod terminal to commit to Git and Push to GitHub.
 -   [GitHub:](https://github.com/) is used as the respository for the projects code after being pushed from Git.

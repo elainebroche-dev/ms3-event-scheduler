@@ -44,7 +44,11 @@ To be written
 ## Design
 
 -   ### Flow Charts
-    - To be written
+     ![Main Flowchart](documentation/flowcharts/ms3-main-flowchart.png)
+     ![View Upcoming Events](documentation/flowcharts/ms3-option-1-view-upcoming-events.png)
+     ![Manage Events](documentation/flowcharts/ms3-option-2-manage-events.png)
+     ![Manage Bookings](documentation/flowcharts/ms3-option-3-manage-bookings.png)
+     ![Review Past Events](documentation/flowcharts/ms3-option-4-review-past-events.png)
     
 ## Technologies Used
 

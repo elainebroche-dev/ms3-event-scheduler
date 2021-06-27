@@ -1,5 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
+# import system and name for the clear screen function
+from os import system, name
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -12,6 +14,15 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
+# define function to clear the screen
+def clear():
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
 
 def show_upcoming_events():
     """
@@ -20,6 +31,8 @@ def show_upcoming_events():
     """
     print("Finding data for upcoming events...\n")
 
+    input("Press Enter to continue...")
+
 
 def manage_events():
     """
@@ -27,6 +40,7 @@ def manage_events():
     event function (add or cancel) based on the user input
     """
     while True:
+        clear()
         print("Manage Events sub-menu:")
         print("1. Add Event")
         print("2. Cancel Event")
@@ -45,6 +59,7 @@ def manage_events():
             break
         else:
             print("Invalid selection. Please enter 1 or 2 or 'X'\n")
+            input("Press Enter to continue...")
 
 
 def manage_bookings():
@@ -53,6 +68,7 @@ def manage_bookings():
     booking function (add or cancel) based on the user input
     """
     while True:
+        clear()
         print("Manage Bookings sub-menu:")
         print("1. Add Booking")
         print("2. Cancel Booking")
@@ -71,6 +87,7 @@ def manage_bookings():
             break
         else:
             print("Invalid selection. Please enter 1 or 2 or 'X'\n")
+            input("Press Enter to continue...")
 
 
 def review_past_events():
@@ -85,12 +102,15 @@ def review_past_events():
     """
     print("Finding data for past events...\n")
 
+    input("Press Enter to continue...")
+
 
 def main():
     """
     Keep displaying the main choices menu until the user chooses to exit
     """
     while True:
+        clear()
         print("Main Menu for Event Scheduler Application:")
         print("1. Show Upcoming Events")
         print("2. Manage Events")
@@ -114,6 +134,7 @@ def main():
             break
         else:
             print("Invalid selection. Please enter a digit between 1 and 5\n")
+            input("Press Enter to continue...")
 
 
 print("Welcome to the Event Scheduler Application")

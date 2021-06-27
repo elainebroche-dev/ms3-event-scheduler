@@ -116,7 +116,7 @@ To be written
 ## Credits 
 
 ### Content 
-- To be written
+- (https://www.geeksforgeeks.org/clear-screen-python/) code to clear the screen - to be written
 
 ### Code 
 - To be written

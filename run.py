@@ -25,14 +25,25 @@ def clear():
         _ = system('clear')
 
 
+def pause(function):
+    """
+    decorator to give the user an opportunity to review feedback on screen
+    before moving on by pressing Enter and screen is refreshed
+    """
+    def wrapper():
+        function()
+        input("XXXPress Enter to continue...")
+        clear()
+    return wrapper
+
+
+@pause
 def show_upcoming_events():
     """
     Display details of all events in the events worksheet with a date value
     >= todays date
     """
     print("Finding data for upcoming events...\n")
-
-    input("Press Enter to continue...")
 
 
 def sub_menu(instr, add_func, cancel_func):
@@ -42,10 +53,10 @@ def sub_menu(instr, add_func, cancel_func):
     """
     while True:
         clear()
-        print(f"Manage {instr}s sub-menu:")
+        print(f"Manage {instr}s sub-menu:\n")
         print(f"1. Add {instr}")
         print(f"2. Cancel {instr}")
-        print("Please select an option by entering 1 or 2")
+        print("\nPlease select an option by entering 1 or 2")
         print("Enter 'X' to return to main menu.")
 
         choice = input("Enter your choice here:\n")
@@ -61,26 +72,39 @@ def sub_menu(instr, add_func, cancel_func):
             input("Press Enter to continue...")
 
 
+@pause
 def add_event():
-    print(" add event test")
-    input("Press Enter to continue...")
+    """
+    Capture and Validate Event Code, Title, Date, Time, Speaker, Capacity data
+    and store in the Events Spreadsheet
+    """
+    print(" to be written add event")
 
 
+@pause
 def cancel_event():
-    print(" cancel event test")
-    input("Press Enter to continue...")
+    """
+    Capture Event Code and Date for event to be cancelled.  Record cancellation
+    in the Events Spreadsheet.  Return list of bookings for cancelled event.
+    """
+    print(" to be written cancel event")
 
 
+@pause
 def add_booking():
-    print(" add booking test")
-    input("Press Enter to continue...")
+    """
+    Capture and Validate Event Code, Date, Name, Email, Seats data
+    and store in the Bookings Spreadsheet
+    """
+    print(" to be written add booking")
 
 
+@pause
 def cancel_booking():
-    print(" cancel booking test")
-    input("Press Enter to continue...")
+    print(" to be written cancel booking")
 
 
+@pause
 def review_past_events():
     """
     Display data on all events in the events worksheet with a date value
@@ -93,8 +117,6 @@ def review_past_events():
     """
     print("Finding data for past events...\n")
 
-    input("Press Enter to continue...")
-
 
 def main():
     """
@@ -102,13 +124,13 @@ def main():
     """
     while True:
         clear()
-        print("Main Menu for Event Scheduler Application:")
+        print("Main Menu for Event Scheduler Application:\n")
         print("1. Show Upcoming Events")
         print("2. Manage Events")
         print("3. Manage Bookings")
         print("4. Review Past Events")
         print("5. Exit")
-        print("Please select an option by entering a number between 1 and 5")
+        print("\nPlease select an option by entering a number between 1 and 5")
 
         choice = input("Enter your choice here:\n")
 
@@ -128,5 +150,4 @@ def main():
             input("Press Enter to continue...")
 
 
-print("Welcome to the Event Scheduler Application")
 main()

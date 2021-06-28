@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 # import system and name for the clear screen function
 from os import system, name
+from datetime import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -28,12 +29,11 @@ def clear():
 def pause(function):
     """
     decorator to give the user an opportunity to review feedback on screen
-    before moving on by pressing Enter and screen is refreshed
+    before moving on by pressing Enter
     """
     def wrapper():
         function()
-        input("XXXPress Enter to continue...")
-        clear()
+        input("Press Enter to continue...")
     return wrapper
 
 
@@ -41,9 +41,19 @@ def pause(function):
 def show_upcoming_events():
     """
     Display details of all events in the events worksheet with a date value
-    >= todays date
+    >= todays date and which are not cancelled
     """
     print("Finding data for upcoming events...\n")
+
+    events = SHEET.worksheet("events").get_all_values()
+    events.pop(0)   # remove the header line
+
+    events = [x for x in events
+              if (datetime.strptime(x[2], '%d-%m-%Y') > datetime.now())
+              and (x[6].upper() != 'CANCELLED')]
+    print(events)
+
+    print("End of data for upcoming events...\n")
 
 
 def sub_menu(instr, add_func, cancel_func):
@@ -79,6 +89,23 @@ def add_event():
     and store in the Events Spreadsheet
     """
     print(" to be written add event")
+
+
+def validate_new_event_data(values):
+    """
+    The rules for new event data values are :
+        a. 6 values must be provided
+                - Event Code, Title, Date, Time, Speaker, Capacity
+        b. each value must have a length > 0
+        c. Title must contain at least 1 alpha character
+        d. Date must have format DD-MM-YYYY and > current date
+        e. The combination of Date and Event Code must be unique in
+                the event spreadsheet
+        d. Time must have format HH:MM and within valid 24hr clock range
+        e. Speaker must contain at least 1 alpha character
+        f. Capacity must be in the range 1 - 50
+    """
+    print("validate new event data to be written")
 
 
 @pause

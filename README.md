@@ -120,6 +120,10 @@ To be written
 
 ### Code 
 - To be written
+- (https://stackoverflow.com/questions/15509345/extracting-double-digit-months-and-days-from-a-python-date) code to return 2 digit month/day - to be written
+- (https://www.cyberciti.biz/faq/howto-get-current-date-time-in-python/) - might use this to help format
+- (https://docs.python.org/3/library/datetime.html) - help with dates
+- (https://docs.gspread.org/en/latest/user-guide.html#getting-all-values-from-a-worksheet-as-a-list-of-lists) - doc on api
 
 ### Media 
 - To be written

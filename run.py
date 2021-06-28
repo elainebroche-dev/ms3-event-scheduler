@@ -14,6 +14,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
+
 # define function to clear the screen
 def clear():
     # for windows
@@ -34,27 +35,25 @@ def show_upcoming_events():
     input("Press Enter to continue...")
 
 
-def manage_events():
+def sub_menu(instr, add_func, cancel_func):
     """
-    Display the manage events sub-menu and invoke the appropriate
-    event function (add or cancel) based on the user input
+    Display the add/cancel sub-menu until the user enters
+    a valid choice then invoke requested function
     """
     while True:
         clear()
-        print("Manage Events sub-menu:")
-        print("1. Add Event")
-        print("2. Cancel Event")
+        print(f"Manage {instr}s sub-menu:")
+        print(f"1. Add {instr}")
+        print(f"2. Cancel {instr}")
         print("Please select an option by entering 1 or 2")
         print("Enter 'X' to return to main menu.")
 
         choice = input("Enter your choice here:\n")
 
         if choice == '1':
-            print("to be written - add event")
-            break
+            add_func()
         elif choice == '2':
-            print("to be written - cancel event")
-            break
+            cancel_func()
         elif choice.upper() == 'X':
             break
         else:
@@ -62,32 +61,24 @@ def manage_events():
             input("Press Enter to continue...")
 
 
-def manage_bookings():
-    """
-    Display the manage bookings sub-menu and invoke the appropriate
-    booking function (add or cancel) based on the user input
-    """
-    while True:
-        clear()
-        print("Manage Bookings sub-menu:")
-        print("1. Add Booking")
-        print("2. Cancel Booking")
-        print("Please select an option by entering 1 or 2")
-        print("Enter 'X' to return to main menu.")
+def add_event():
+    print(" add event test")
+    input("Press Enter to continue...")
 
-        choice = input("Enter your choice here:\n")
 
-        if choice == '1':
-            print("to be written - add booking")
-            break
-        elif choice == '2':
-            print("to be written - cancel booking")
-            break
-        elif choice.upper() == 'X':
-            break
-        else:
-            print("Invalid selection. Please enter 1 or 2 or 'X'\n")
-            input("Press Enter to continue...")
+def cancel_event():
+    print(" cancel event test")
+    input("Press Enter to continue...")
+
+
+def add_booking():
+    print(" add booking test")
+    input("Press Enter to continue...")
+
+
+def cancel_booking():
+    print(" cancel booking test")
+    input("Press Enter to continue...")
 
 
 def review_past_events():
@@ -124,9 +115,9 @@ def main():
         if choice == '1':
             show_upcoming_events()
         elif choice == '2':
-            manage_events()
+            sub_menu("Event", add_event, cancel_event)
         elif choice == '3':
-            manage_bookings()
+            sub_menu("Booking", add_booking, cancel_booking)
         elif choice == '4':
             review_past_events()
         elif choice == '5':

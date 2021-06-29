@@ -3,7 +3,6 @@ from google.oauth2.service_account import Credentials
 # import system and name for the clear screen function
 from os import system, name
 from datetime import datetime
-from operator import itemgetter
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -45,11 +44,23 @@ def show_upcoming_events():
     >= todays date and which are not cancelled
     """
     print("Finding data for upcoming events...\n")
+    events = get_upcoming_events()
 
+    print(events)
+    print("End of data for upcoming events...\n")
+
+
+def get_upcoming_events():
+    """
+    Get the data in the events spreadsheet, eliminate data where the
+    event date <= current date, remove un-needed columns, calculate
+    number of seats available for each event and return the data back
+    to caller
+    """
     events = SHEET.worksheet("events").get_all_values()
     events.pop(0)   # remove the header line
 
-    # restrict the list to just events that are in the future5
+    # restrict the list to just events that are in the future
     events = [x for x in events
               if (datetime.strptime(x[2], '%d-%m-%Y') > datetime.now())
               and (x[6].upper() != 'CANCELLED')]
@@ -57,9 +68,12 @@ def show_upcoming_events():
     # sort the events into chronological order
     events.sort(key=lambda x: datetime.strptime(x[2], '%d-%m-%Y'))
 
-    print(events)
+    # remove the Status and Reason elements from the lists
+    for x in events:
+        x.pop()
+        x.pop()
 
-    print("End of data for upcoming events...\n")
+    return events
 
 
 def sub_menu(instr, add_func, cancel_func):

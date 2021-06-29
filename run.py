@@ -46,8 +46,22 @@ def show_upcoming_events():
     print("Finding data for upcoming events...\n")
     events = get_upcoming_events()
 
-    print(events)
-    print("End of data for upcoming events...\n")
+    print("Formatting data for output...\n")
+
+    # add headers for the output columns
+    events.insert(0, ['EVENT CODE', 'TITLE', 'DATE', 'TIME',
+                  'SPEAKER', 'SEATS AVAILABLE'])
+    # transpose the list, get the max of each column and
+    # store in as dict[column]=legnth
+    col_len = {i: max(map(len, inner)) for i, inner in enumerate(zip(*events))}
+
+    # print using the column index from enumerate to lookup this columns lenght
+    for inner in events:
+        for col, word in enumerate(inner):
+            print(f"{word:{col_len[col]}}", end=" | ")
+        print()
+
+    print("\nEnd of data for upcoming events...\n")
 
 
 def get_upcoming_events():
@@ -72,6 +86,14 @@ def get_upcoming_events():
     for x in events:
         x.pop()
         x.pop()
+
+    # deduct booked seats from capacity to give available seat totals
+    bookings = SHEET.worksheet("bookings").get_all_values()
+    for x in events:
+        for y in bookings:
+            # check for matching Event Code and Date values
+            if x[0] == y[0] and x[2] == y[1]:
+                x[5] = str(int(x[5]) - int(y[4]))
 
     return events
 

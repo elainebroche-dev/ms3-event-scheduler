@@ -51,14 +51,15 @@ def show_upcoming_events():
     # add headers for the output columns
     events.insert(0, ['EVENT CODE', 'TITLE', 'DATE', 'TIME',
                   'SPEAKER', 'SEATS AVAILABLE'])
-    # transpose the list, get the max of each column and
-    # store in as dict[column]=legnth
-    col_len = {i: max(map(len, inner)) for i, inner in enumerate(zip(*events))}
 
-    # print using the column index from enumerate to lookup this columns lenght
+    # transpose the list, get the max of each column and
+    # store in col_lens as dict[column]=legnth
+    col_lens = {i: max(map(len, inner)) for i, inner in enumerate(zip(*events))}
+
+    # print using the column index from enumerate to lookup this columns length
     for inner in events:
         for col, word in enumerate(inner):
-            print(f"{word:{col_len[col]}}", end=" | ")
+            print(f"{word:{col_lens[col]}}", end=" | ")
         print()
 
     print("\nEnd of data for upcoming events...\n")

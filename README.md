@@ -42,7 +42,7 @@ To be written
 
 
 ## Design
-
+- REVIEW RULES AROUNT >= <=> dates and - explain business rules and check code and diagrams match
 -   ### Flow Charts
      ![Main Flowchart](documentation/flowcharts/ms3-main-flowchart.png)
      ![View Upcoming Events](documentation/flowcharts/ms3-option-1-view-upcoming-events.png)
@@ -126,6 +126,7 @@ To be written
 - (https://docs.gspread.org/en/latest/user-guide.html#getting-all-values-from-a-worksheet-as-a-list-of-lists) - doc on api
 - (https://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list/4174955) - information on sort using lambda
 - (https://stackoverflow.com/questions/61285626/print-list-of-lists-in-neat-columns-table) - code to format list for printing
+
 
 ### Media 
 - To be written

@@ -152,8 +152,6 @@ def add_event():
     Capture and validate Event Code, Title, Date, Speaker, Capacity data
     and store in the Events Spreadsheet
     """
-    print(" to be written add event")
-
     event = get_new_event_data()
 
     add_to_worksheet('events', event)
@@ -262,8 +260,6 @@ def add_booking():
     Capture and validate Event Code, Date, Name, Email, Seats data
     and store in the Bookings Spreadsheet
     """
-    print(" to be written add booking")
-
     booking = get_new_booking_data()
 
     add_to_worksheet('bookings', booking)
@@ -313,24 +309,76 @@ def validate_new_booking_data(values):
 @pause
 def cancel_booking():
     """
-    Prompt the user for email address of booking, display all current
-    bookings for that email address - i.e. where booking Date >= current date
-    Prompt the user to select booking to cancel, remove booking
-    from bookings spreadsheet
+    Capture and validate Event Code, Date, Email data
+    and remove corresponding row from the Bookings Spreadsheet
+    If multiple bookings exist for the input Event Code, Date, Email
+    combination, then only the first matching row in the spreadsheet
+    will be removed.
     """
-    clear()
-    print("CANCEL A BOOKING")
-    print("Please enter booking email address :")
-    print("Example: jo.ryan@anemail.com")
+    booking = get_cancel_booking_data()
 
-    email = input("Enter your data here:\n")
+    remove_booking_from_worksheet(booking)
 
-    # get all bookings for the email where Date >= current date
-    # to be written
 
-    # if bookings found display the list and prompt user
+def get_cancel_booking_data():
+    """
+    Get booking data input from the user.
+    Run a while loop to collect a valid string of data from the user
+    via the terminal, which must be a string of the following values
+    separated by commas :
+    Event Code, Date, Email
+    The loop will repeatedly request data, until it is valid.
+    """
+    while True:
+        clear()
+        print("CANCEL A BOOKING")
+        print("Please enter data items separated by commas.  Data items are :")
+        print("Event Code, Date(DD-MM-YYY), Email")
+        print("Example: EC01, 29-04-2022, jo.ryan@anemail.com\n")
 
-    return email
+        data_str = input("Enter your data here:\n")
+        booking = data_str.split(",")
+
+        if validate_cancel_booking_data(booking):
+            break
+
+    return booking
+
+
+def validate_cancel_booking_data(booking):
+    """
+    The rules for cancel booking data values are :
+        a. 3 values must be provided
+                - Event Code, Date, Email
+        b. each value must have a length > 0
+        c. Date must have format DD-MM-YYYY and >= current date
+        d. Name and Email must contain at least 1 alpha character
+        e. Email must contain '@' with strings before and after
+    """
+    print("validate cancel booking data to be written")
+
+    return True
+
+
+def remove_booking_from_worksheet(data):
+    """
+    Attempt to remove row from bookings spreadsheet where Event Code,
+    Date and Email match the input booking - print result to screen
+    If multiple bookings exist for the input Event Code, Date, Email
+    combination, then only the first matching row in the spreadsheet
+    will be removed.
+    """
+    print(f"Attempting to remove booking {data} from bookings spreadsheet\n")
+
+    bookings = SHEET.worksheet("bookings").get_all_values()
+    for x in range(len(bookings)):
+        if (bookings[x][0] == data[0].upper() and bookings[x][1] == data[1]
+           and bookings[x][3] == data[2].lower()):
+            SHEET.worksheet("bookings").delete_rows(x+1)
+            print("Booking deleted\n")
+            return
+
+    print("Booking could not be found in bookings spreadsheet\n")
 
 
 @pause

@@ -127,6 +127,9 @@ To be written
 - (https://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list/4174955) - information on sort using lambda
 - (https://stackoverflow.com/questions/61285626/print-list-of-lists-in-neat-columns-table) - code to format list for printing
 - (https://docs.gspread.org/en/latest/api.html?highlight=delete%20rows#gspread.models.Worksheet.delete_rows) - referred to for gspread delete
+- (https://stackoverflow.com/questions/22304500/multiple-or-condition-in-python) - usage of 'in'
+- (https://stackoverflow.com/questions/47547403/regular-expression-for-mm-dd-yy-date-format-not-finding-any-match-in-python) - ideas on how to verify date
+- (https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) regular expression to validate email address
 
 
 ### Media 

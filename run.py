@@ -262,9 +262,10 @@ def cancel_event():
 
     # semantic/business rules checks
     # a. date must not be in the past
-    print('business rules to be written')
-
-    cancel_event_in_worksheet(event)
+    if (datetime.strptime(event[1], '%d-%m-%Y') < datetime.now()):
+        print(f'Events in the past cannot be cancelled\n')
+    else:
+        cancel_event_in_worksheet(event)
 
 
 def cancel_event_in_worksheet(data):
@@ -370,9 +371,10 @@ def cancel_booking():
 
     # semantic/business rules checks
     # a. date must not be in the past
-    print('business rules to be written')
-
-    remove_booking_from_worksheet(booking)
+    if (datetime.strptime(event[1], '%d-%m-%Y') < datetime.now()):
+        print(f'Bookings in the past cannot be cancelled\n')
+    else:
+        remove_booking_from_worksheet(booking)
 
 
 def remove_booking_from_worksheet(data):

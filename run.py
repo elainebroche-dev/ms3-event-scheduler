@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 # import system and name for the clear screen function
 from os import system, name
 from datetime import datetime
+import re
 
 SCOPE = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -92,7 +93,7 @@ def add_to_worksheet(worksheet, data):
     print(f'{worksheet} worksheet updated successfully.\n')
 
 
-def get_data(funcdesc, itemlist, example):
+def get_data(funcdesc, items, example):
     """
     Because a number of different operations (e.g. add booking,
     cancel event etc) all require input from the user, which all
@@ -111,33 +112,62 @@ def get_data(funcdesc, itemlist, example):
         clear()
         print(funcdesc)
         print('Please enter data items separated by commas.  Data items are :')
-        print(itemlist)
+        print(items)
         print(example)
 
         data_str = input('Enter your data here:\n')
         datalist = data_str.split(',')
+        datalist = [x.strip() for x in datalist]  # trim the input values
+
+        itemlist = items.split(',')
+        itemlist = [x.strip() for x in itemlist]  # trim the item names
 
         if validate_data(itemlist, datalist):
             break
+
+        # getting to here means inputs were not valid
+        # wait to allow user to read error message on screen
+        input('\nPress Enter to continue...')
 
     return datalist
 
 
 def validate_data(items, values):
     """
-    ?????? The rules for new event data values are :
-        a. 5 values must be provided
-                - Event Code, Title, Date, Speaker, Capacity
-        b. each value must have a length > 0
-        c. Title must contain at least 1 alpha character
-        d. Date must have format DD-MM-YYYY and > current date
-        e. The combination of Date and Event Code must be unique in
-                the event spreadsheet
-        f. Speaker must contain at least 1 alpha character
-        g. Capacity must be in the range 1 - 50
-
+    Validate a list of user inputs based on a list of data items
     """
-    print('to be written')
+    try:
+
+        # check the number of user inputs matches the number required
+        if len(items) != len(values):
+            raise ValueError('Incorrect number of input values,'
+                             f' {len(items)} expected')
+
+        # check no 0 length values in the input
+        if (len(min(values, key=len))) == 0:
+            raise ValueError('All inputs must have a length > 0')
+
+        # loop through each expected input and check syntax based on name
+        # event code, speaker, name, title and reason do not require futher
+        # checks - only check for those fields is that length > 0
+
+        for x in range(len(items)):
+            if items[x].upper() == 'DATE(DD-MM-YYYY)':
+                datetime.strptime(values[x], '%d-%m-%Y')    # ? ValueError
+                # using a regex to check 2 digit day and month entered
+                if not re.search(r'^\d{2}-\d{2}-\d{4}$', values[x]):
+                    raise ValueError('2 digit day and month required in Date')
+            elif items[x].upper() in ('CAPACITY', 'SEATS'):
+                int(values[x])                              # ? ValueError
+            elif items[x].upper() == 'EMAIL':
+                patt = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+                if not re.search(patt, values[x]):
+                    raise ValueError('Email address is not valid')
+
+    except ValueError as e:
+        print(f"Invalid data: {e}, please try again.")
+        return False
+
     return True
 
 
@@ -189,7 +219,7 @@ def get_active_events():
     for x in events:
         for y in bookings:
             # check for matching Event Code and Date values
-            if x[0] == y[0] and x[2] == y[1]:
+            if x[0].upper() == y[0].upper() and x[2] == y[1]:
                 x[4] = str(int(x[4]) - int(y[4]))
 
     return events
@@ -203,12 +233,20 @@ def add_event():
     """
     # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
-                     'Event Code, Title, Date(DD-MM-YYY), Speaker, Capacity',
+                     'Event Code, Title, Date(DD-MM-YYYY), Speaker, Capacity',
                      'Example: HS01, History 101, 29-04-2022, Joe Smith, 15\n')
 
-    # to be written - need a check here for uniqueness of event code and date
-    # before inserting !!!
+    # semantic/business rules checks
+    # a. date must be in the future
+    # b. event code/date combination must be unique
+    # c. capacity must be in range 1 - 50
+    print('business rules to be written')
+
+    #  if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now()):
+    #  print(f'Event not added.  Event dates must be > current date\n')
     add_to_worksheet('events', event)
+
+    print('New event added...\n')
 
 
 @pause
@@ -219,8 +257,12 @@ def cancel_event():
     bookings for cancelled event.
     """
     event = get_data('CANCEL EVENT',
-                     'Event Code, Date(DD-MM-YYY), Reason',
+                     'Event Code, Date(DD-MM-YYYY), Reason',
                      'Example: HS01, 29-04-2022, Speaker not available\n')
+
+    # semantic/business rules checks
+    # a. date must not be in the past
+    print('business rules to be written')
 
     cancel_event_in_worksheet(event)
 
@@ -243,15 +285,12 @@ def cancel_event_in_worksheet(data):
             print('Bookings for cancelled event - please notify attendees :\n')
             bookings = SHEET.worksheet('bookings').get_all_values()
             bookings = [y for y in bookings
-                        if (y[0] == data[0] and y[1] == data[1])]
+                        if (y[0].upper() == data[0].upper()
+                            and y[1] == data[1])]
             table_print(bookings)
             return
 
     print('Event could not be found in events spreadsheet\n')
-
-
-def show_bookings_for_event(event):
-    print('to be written')
 
 
 @pause
@@ -301,9 +340,15 @@ def add_booking():
     and store in the Bookings Spreadsheet
     """
     booking = get_data('ADD A NEW BOOKING',
-                       'Event Code, Date(DD-MM-YYY), Name, Email, Seats',
+                       'Event Code, Date(DD-MM-YYYY), Name, Email, Seats',
                        'Example: HS01, 29-04-2022, Jo Ryan, '
                        'jo.ryan@anemail.com, 3\n')
+
+    # semantic/business rules checks
+    # a. event must exist in events sheet
+    # b. date must not be in the past
+    # c. seats requested must be <= seats available
+    print('business rules to be written')
 
     add_to_worksheet('bookings', booking)
 
@@ -320,8 +365,12 @@ def cancel_booking():
     will be removed.
     """
     booking = get_data('CANCEL BOOKING',
-                       'Event Code, Date(DD-MM-YYY), Email',
+                       'Event Code, Date(DD-MM-YYYY), Email',
                        'Example: HS01, 29-04-2022, jo.ryan@anemail.com\n')
+
+    # semantic/business rules checks
+    # a. date must not be in the past
+    print('business rules to be written')
 
     remove_booking_from_worksheet(booking)
 
@@ -338,8 +387,9 @@ def remove_booking_from_worksheet(data):
 
     bookings = SHEET.worksheet('bookings').get_all_values()
     for x in range(len(bookings)):
-        if (bookings[x][0] == data[0] and bookings[x][1] == data[1]
-           and bookings[x][3] == data[2]):
+        if (bookings[x][0].upper() == data[0].upper()
+           and bookings[x][1] == data[1]
+           and bookings[x][3].upper() == data[2].upper()):
             SHEET.worksheet('bookings').delete_rows(x+1)
             print('Booking removed from spreadsheet...\n')
             return
@@ -415,7 +465,7 @@ def get_past_events():
         x.insert(5, '0')
         for y in bookings:
             # check for matching Event Code and Date values
-            if x[0] == y[0] and x[2] == y[1]:
+            if x[0].upper() == y[0].upper() and x[2] == y[1]:
                 x[5] = str(int(x[5]) + int(y[4]))   # add to seats_booked
                 x[6] = str(round((int(x[5]) / int(x[4]) * 100), 2))   # calc %
 

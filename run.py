@@ -171,6 +171,43 @@ def validate_data(items, values):
     return True
 
 
+def event_exists(event_code, event_date):
+    """
+    Return True if the input event code and date exist as an
+    entry in the events spreadsheet.  Otherwise return False
+    """
+    events = SHEET.worksheet('events').get_all_values()
+    for x in range(len(events)):
+        if (events[x][0].upper() == event_code.upper() 
+           and events[x][2] == event_date):
+            return True
+    return False
+
+
+def num_seats_available(event_code, event_date):
+    """
+    Calculate number of seats available for an event and
+    return this number as an int
+    """
+    total = 0
+    # get capacity
+    events = SHEET.worksheet('events').get_all_values()
+    for x in range(len(events)):
+        if (events[x][0].upper() == event_code.upper() 
+           and events[x][2] == event_date):
+            total = int(events[x][4])
+            break
+
+    # deduct seats booked
+    bookings = SHEET.worksheet('bookings').get_all_values()
+    for y in range(len(bookings)):
+        if (bookings[y][0].upper() == event_code.upper() 
+           and bookings[y][1] == event_date):
+            total = total - int(x[4])
+
+    return total
+
+
 @pause
 def show_active_events():
     """
@@ -216,11 +253,8 @@ def get_active_events():
 
     # deduct booked seats from capacity to give available seat totals
     bookings = SHEET.worksheet('bookings').get_all_values()
-    for x in events:
-        for y in bookings:
-            # check for matching Event Code and Date values
-            if x[0].upper() == y[0].upper() and x[2] == y[1]:
-                x[4] = str(int(x[4]) - int(y[4]))
+    for x in bookings:
+        x[4] = num_seats_available(x[0], x[2])
 
     return events
 
@@ -238,15 +272,17 @@ def add_event():
 
     # semantic/business rules checks
     # a. date must be in the future
-    # b. event code/date combination must be unique
-    # c. capacity must be in range 1 - 50
-    print('business rules to be written')
-
-    #  if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now()):
-    #  print(f'Event not added.  Event dates must be > current date\n')
-    add_to_worksheet('events', event)
-
-    print('New event added...\n')
+    # b. capacity must be in range 1 - 50
+    # c. event code/date combination must be unique
+    if (datetime.strptime(event[2], '%d-%m-%Y') <= datetime.now()):
+        print('Event not added.  Event dates must be > current date\n')
+    elif (int(event[4]) > 50 or int(event[4] < 1)):
+        print('Event not added. Capacity must be within the range 1 - 50\n')
+    elif event_exists(event[0], event[2]):
+        print('Event not added. Duplicate Event Code and Date found\n')
+    else:
+        add_to_worksheet('events', event)
+        print('New event added...\n')
 
 
 @pause
@@ -263,7 +299,7 @@ def cancel_event():
     # semantic/business rules checks
     # a. date must not be in the past
     if (datetime.strptime(event[1], '%d-%m-%Y') < datetime.now()):
-        print(f'Events in the past cannot be cancelled\n')
+        print('Events in the past cannot be cancelled\n')
     else:
         cancel_event_in_worksheet(event)
 
@@ -277,7 +313,8 @@ def cancel_event_in_worksheet(data):
 
     events = SHEET.worksheet('events').get_all_values()
     for x in range(len(events)):
-        if (events[x][0] == data[0] and events[x][2] == data[1]):
+        if (events[x][0].upper() == data[0].upper()
+           and events[x][2] == data[1]):
             SHEET.worksheet('events').update_cell(x+1, 6, 'cancelled')
             SHEET.worksheet('events').update_cell(x+1, 7, data[2])
             print('Event cancelled in spreadsheet...\n')
@@ -346,14 +383,20 @@ def add_booking():
                        'jo.ryan@anemail.com, 3\n')
 
     # semantic/business rules checks
-    # a. event must exist in events sheet
-    # b. date must not be in the past
-    # c. seats requested must be <= seats available
-    print('business rules to be written')
-
-    add_to_worksheet('bookings', booking)
-
-    print('New booking added...\n')
+    # a. date must not be in the past
+    # b. event must exist in events sheet
+    # c. seats requested must be <= seats available2
+    if (datetime.strptime(booking[1], '%d-%m-%Y') < datetime.now()):
+        print('Booking not added.  Booking dates must be >= current date\n')
+    elif not event_exists(booking[0], booking[1]):
+        print('Booking not added. Event does not exist\n')
+    elif (num_seats_available(booking[0], booking[1]) < int(booking[4])):
+        print('Booking not added. Not enough seats available\n')
+    else:
+        add_to_worksheet('bookings', booking)
+        add_to_worksheet('bookings', ['EV01', '29-02-2021', 
+                         'ebr', 'ebr@anemail.com', 99])
+        print('New booking added...\n')
 
 
 @pause
@@ -371,8 +414,8 @@ def cancel_booking():
 
     # semantic/business rules checks
     # a. date must not be in the past
-    if (datetime.strptime(event[1], '%d-%m-%Y') < datetime.now()):
-        print(f'Bookings in the past cannot be cancelled\n')
+    if (datetime.strptime(booking[1], '%d-%m-%Y') < datetime.now()):
+        print('Bookings in the past cannot be cancelled\n')
     else:
         remove_booking_from_worksheet(booking)
 

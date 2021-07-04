@@ -112,17 +112,24 @@ def get_data(funcdesc, items, example):
         clear()
         print(funcdesc)
         print('Please enter data items separated by commas.  Data items are :')
-        print(items)
-        print(example)
+        print(f'     {items}')
+        print(f'     {example}')
+        print('or enter "x" to quit\n')
 
         data_str = input('Enter your data here:\n')
+
+        # check to see if the user wants to abort the operation
+        if data_str.upper() == 'X':
+            print('Quiting operation and returning to sub-menu')
+            return []
+
         datalist = data_str.split(',')
         datalist = [x.strip() for x in datalist]  # trim the input values
 
         itemlist = items.split(',')
         itemlist = [x.strip() for x in itemlist]  # trim the item names
 
-        if validate_data(itemlist, datalist):
+        if validate_data(funcdesc, itemlist, datalist):
             break
 
         # getting to here means inputs were not valid
@@ -132,10 +139,11 @@ def get_data(funcdesc, items, example):
     return datalist
 
 
-def validate_data(items, values):
+def validate_data(funcdesc, items, values):
     """
     Validate a list of user inputs based on a list of data items
     """
+    print("Validating input values...\n")
     try:
 
         # check the number of user inputs matches the number required
@@ -152,22 +160,64 @@ def validate_data(items, values):
         # checks - only check for those fields is that length > 0
 
         for x in range(len(items)):
-            if items[x].upper() == 'DATE(DD-MM-YYYY)':
-                datetime.strptime(values[x], '%d-%m-%Y')    # ? ValueError
+            if items[x].upper() == 'EVENT CODE':
+                tmpcode = values[x]
+            elif items[x].upper() == 'DATE(DD-MM-YYYY)':
+                tmpdate = values[x]
+                datetime.strptime(tmpdate, '%d-%m-%Y')    # ? ValueError
                 # using a regex to check 2 digit day and month entered
-                if not re.search(r'^\d{2}-\d{2}-\d{4}$', values[x]):
+                if not re.search(r'^\d{2}-\d{2}-\d{4}$', tmpdate):
                     raise ValueError('2 digit day and month required in Date')
             elif items[x].upper() in ('CAPACITY', 'SEATS'):
-                int(values[x])                              # ? ValueError
+                tmpnum = int(values[x])                   # ? ValueError
+                # check value is > 0
+                if (tmpnum <= 0):
+                    raise ValueError(f'{items[x]} must have a value > 0')
             elif items[x].upper() == 'EMAIL':
                 patt = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
                 if not re.search(patt, values[x]):
                     raise ValueError('Email address is not valid')
 
+        # once all syntax checks have been passed, next the semantic checks/
+        # business rules for the data need to run - these are specific to the
+        # function being requested
+
+        if (funcdesc == 'ADD A NEW EVENT'):
+            # a. date must be in the future
+            # b. event code/date combination must be unique
+            if (datetime.strptime(tmpdate, '%d-%m-%Y') <= datetime.now()):
+                raise ValueError('Event dates must be > current date')
+            elif event_exists(tmpdate, tmpcode):
+                raise ValueError('Duplicate Event Code and Date found')
+
+        elif (funcdesc == 'CANCEL EVENT'):
+            # a. date must not be in the past
+            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
+                raise ValueError('Events in the past cannot be cancelled')
+
+        elif (funcdesc == 'ADD A NEW BOOKING'):
+            # a. date must not be in the past
+            # b. event must exist in events sheet
+            # c. seats requested must be <= seats available2
+            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
+                raise ValueError('Booking dates must be >= current date')
+            elif not event_exists(tmpcode, tmpdate):
+                raise ValueError('Booking cannot be added.'     
+                                 'Event does not exist')
+            elif (num_seats_available(tmpcode, tmpdate) < tmpnum):
+                raise ValueError('Booking cannot be added. '
+                                 'Not enough seats available')
+
+        elif (funcdesc == 'CANCEL BOOKING'):
+            # a. date must not be in the past
+            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
+                raise ValueError('Bookings in the past cannot be cancelled')
+
     except ValueError as e:
         print(f"Invalid data: {e}, please try again.")
         return False
 
+    print('Input values are valid...\n')
     return True
 
 
@@ -178,7 +228,7 @@ def event_exists(event_code, event_date):
     """
     events = SHEET.worksheet('events').get_all_values()
     for x in range(len(events)):
-        if (events[x][0].upper() == event_code.upper() 
+        if (events[x][0].upper() == event_code.upper()
            and events[x][2] == event_date):
             return True
     return False
@@ -193,7 +243,7 @@ def num_seats_available(event_code, event_date):
     # get capacity
     events = SHEET.worksheet('events').get_all_values()
     for x in range(len(events)):
-        if (events[x][0].upper() == event_code.upper() 
+        if (events[x][0].upper() == event_code.upper()
            and events[x][2] == event_date):
             total = int(events[x][4])
             break
@@ -201,10 +251,12 @@ def num_seats_available(event_code, event_date):
     # deduct seats booked
     bookings = SHEET.worksheet('bookings').get_all_values()
     for y in range(len(bookings)):
-        if (bookings[y][0].upper() == event_code.upper() 
+        if (bookings[y][0].upper() == event_code.upper()
            and bookings[y][1] == event_date):
             total = total - int(x[4])
 
+    print(f'\nNumber of seats available for {event_code} - '
+          f'{event_date} is {total}\n')
     return total
 
 
@@ -268,19 +320,9 @@ def add_event():
     # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
                      'Event Code, Title, Date(DD-MM-YYYY), Speaker, Capacity',
-                     'Example: HS01, History 101, 29-04-2022, Joe Smith, 15\n')
+                     'Example: HS01, History 101, 29-04-2022, Joe Smith, 15')
 
-    # semantic/business rules checks
-    # a. date must be in the future
-    # b. capacity must be in range 1 - 50
-    # c. event code/date combination must be unique
-    if (datetime.strptime(event[2], '%d-%m-%Y') <= datetime.now()):
-        print('Event not added.  Event dates must be > current date\n')
-    elif (int(event[4]) > 50 or int(event[4] < 1)):
-        print('Event not added. Capacity must be within the range 1 - 50\n')
-    elif event_exists(event[0], event[2]):
-        print('Event not added. Duplicate Event Code and Date found\n')
-    else:
+    if (len(event)):
         add_to_worksheet('events', event)
         print('New event added...\n')
 
@@ -294,14 +336,11 @@ def cancel_event():
     """
     event = get_data('CANCEL EVENT',
                      'Event Code, Date(DD-MM-YYYY), Reason',
-                     'Example: HS01, 29-04-2022, Speaker not available\n')
+                     'Example: HS01, 29-04-2022, Speaker not available')
 
-    # semantic/business rules checks
-    # a. date must not be in the past
-    if (datetime.strptime(event[1], '%d-%m-%Y') < datetime.now()):
-        print('Events in the past cannot be cancelled\n')
-    else:
+    if (len(event)):
         cancel_event_in_worksheet(event)
+        print('Event cancelled...\n')
 
 
 def cancel_event_in_worksheet(data):
@@ -380,21 +419,12 @@ def add_booking():
     booking = get_data('ADD A NEW BOOKING',
                        'Event Code, Date(DD-MM-YYYY), Name, Email, Seats',
                        'Example: HS01, 29-04-2022, Jo Ryan, '
-                       'jo.ryan@anemail.com, 3\n')
+                       'jo.ryan@anemail.com, 3')
 
-    # semantic/business rules checks
-    # a. date must not be in the past
-    # b. event must exist in events sheet
-    # c. seats requested must be <= seats available2
-    if (datetime.strptime(booking[1], '%d-%m-%Y') < datetime.now()):
-        print('Booking not added.  Booking dates must be >= current date\n')
-    elif not event_exists(booking[0], booking[1]):
-        print('Booking not added. Event does not exist\n')
-    elif (num_seats_available(booking[0], booking[1]) < int(booking[4])):
-        print('Booking not added. Not enough seats available\n')
-    else:
+    if len(booking):
         add_to_worksheet('bookings', booking)
-        add_to_worksheet('bookings', ['EV01', '29-02-2021', 
+        add_to_worksheet('bookings', ['EV01', 
+                         datetime.strptime('27-02-2021', '%d-%m-%Y'),
                          'ebr', 'ebr@anemail.com', 99])
         print('New booking added...\n')
 
@@ -410,14 +440,11 @@ def cancel_booking():
     """
     booking = get_data('CANCEL BOOKING',
                        'Event Code, Date(DD-MM-YYYY), Email',
-                       'Example: HS01, 29-04-2022, jo.ryan@anemail.com\n')
+                       'Example: HS01, 29-04-2022, jo.ryan@anemail.com')
 
-    # semantic/business rules checks
-    # a. date must not be in the past
-    if (datetime.strptime(booking[1], '%d-%m-%Y') < datetime.now()):
-        print('Bookings in the past cannot be cancelled\n')
-    else:
+    if len(booking):
         remove_booking_from_worksheet(booking)
+        print('Booking cancelled...\n')
 
 
 def remove_booking_from_worksheet(data):

@@ -104,9 +104,9 @@ def get_data(funcdesc, items, example):
 
     This function gets data input from the user.
     Run a while loop to collect a valid string of data from the user
-    via the terminal, which must be a string of the following values
-    separated by commas.
-    The loop will repeatedly request data, until it is valid.
+    via the terminal, which must be a string of values separated by commas.
+    The loop will repeatedly request data, until it is valid or
+    user quits the operation.
     """
     while True:
         clear()
@@ -120,8 +120,8 @@ def get_data(funcdesc, items, example):
 
         # check to see if the user wants to abort the operation
         if data_str.upper() == 'X':
-            print('Quiting operation and returning to sub-menu')
-            return []
+            print('\nQuitting operation and returning to sub-menu\n')
+            return []         # return empty list to indicate user is quitting
 
         datalist = data_str.split(',')
         datalist = [x.strip() for x in datalist]  # trim the input values
@@ -143,7 +143,7 @@ def validate_data(funcdesc, items, values):
     """
     Validate a list of user inputs based on a list of data items
     """
-    print("Validating input values...\n")
+    print('\nValidating input values...\n')
     try:
 
         # check the number of user inputs matches the number required
@@ -156,12 +156,9 @@ def validate_data(funcdesc, items, values):
             raise ValueError('All inputs must have a length > 0')
 
         # loop through each expected input and check syntax based on name
-        # event code, speaker, name, title and reason do not require futher
-        # checks - only check for those fields is that length > 0
-
         for x in range(len(items)):
             if items[x].upper() == 'EVENT CODE':
-                tmpcode = values[x]
+                tmpcode = values[x]     # capture the event code for use later
             elif items[x].upper() == 'DATE(DD-MM-YYYY)':
                 tmpdate = values[x]
                 datetime.strptime(tmpdate, '%d-%m-%Y')    # ? ValueError
@@ -180,7 +177,7 @@ def validate_data(funcdesc, items, values):
 
         # once all syntax checks have been passed, next the semantic checks/
         # business rules for the data need to run - these are specific to the
-        # function being requested
+        # operation being requested
 
         if (funcdesc == 'ADD A NEW EVENT'):
             # a. date must be in the future
@@ -202,7 +199,7 @@ def validate_data(funcdesc, items, values):
             if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
                 raise ValueError('Booking dates must be >= current date')
             elif not event_exists(tmpcode, tmpdate):
-                raise ValueError('Booking cannot be added.'     
+                raise ValueError('Booking cannot be added. '
                                  'Event does not exist')
             elif (num_seats_available(tmpcode, tmpdate) < tmpnum):
                 raise ValueError('Booking cannot be added. '
@@ -224,12 +221,13 @@ def validate_data(funcdesc, items, values):
 def event_exists(event_code, event_date):
     """
     Return True if the input event code and date exist as an
-    entry in the events spreadsheet.  Otherwise return False
+    entry in the events spreadsheet and this event is not
+    cancelled.  Otherwise return False
     """
     events = SHEET.worksheet('events').get_all_values()
-    for x in range(len(events)):
-        if (events[x][0].upper() == event_code.upper()
-           and events[x][2] == event_date):
+    for x in events:
+        if (x[0].upper() == event_code.upper() and x[2] == event_date
+           and x[5].upper() != 'CANCELLED'):
             return True
     return False
 
@@ -242,18 +240,16 @@ def num_seats_available(event_code, event_date):
     total = 0
     # get capacity
     events = SHEET.worksheet('events').get_all_values()
-    for x in range(len(events)):
-        if (events[x][0].upper() == event_code.upper()
-           and events[x][2] == event_date):
-            total = int(events[x][4])
+    for x in events:
+        if (x[0].upper() == event_code.upper() and x[2] == event_date):
+            total = int(x[4])
             break
 
     # deduct seats booked
     bookings = SHEET.worksheet('bookings').get_all_values()
-    for y in range(len(bookings)):
-        if (bookings[y][0].upper() == event_code.upper()
-           and bookings[y][1] == event_date):
-            total = total - int(x[4])
+    for y in bookings:
+        if (y[0].upper() == event_code.upper() and y[1] == event_date):
+            total = total - int(y[4])
 
     print(f'\nNumber of seats available for {event_code} - '
           f'{event_date} is {total}\n')
@@ -268,8 +264,6 @@ def show_active_events():
     """
     print('Finding data for upcoming events...\n')
     events = get_active_events()
-
-    print('Formatting data for output...\n')
 
     # add headers for the output columns
     events.insert(0, ['EVENT CODE', 'TITLE', 'DATE',
@@ -291,9 +285,10 @@ def get_active_events():
     events.pop(0)   # remove the header line
 
     # restrict the list to just events that are in the future
+    # and not cancelled
     events = [x for x in events
               if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now())
-              and (x[6].upper() != 'CANCELLED')]
+              and (x[5].upper() != 'CANCELLED')]
 
     # sort the events into chronological order
     events.sort(key=lambda x: datetime.strptime(x[2], '%d-%m-%Y'))
@@ -304,9 +299,12 @@ def get_active_events():
         x.pop()
 
     # deduct booked seats from capacity to give available seat totals
-    bookings = SHEET.worksheet('bookings').get_all_values()
-    for x in bookings:
-        x[4] = num_seats_available(x[0], x[2])
+    bookings = SHEET.worksheet("bookings").get_all_values()
+    for x in events:
+        for y in bookings:
+            # check for matching Event Code and Date values
+            if x[0].upper() == y[0].upper() and x[2] == y[1]:
+                x[4] = str(int(x[4]) - int(y[4]))
 
     return events
 
@@ -340,31 +338,45 @@ def cancel_event():
 
     if (len(event)):
         cancel_event_in_worksheet(event)
-        print('Event cancelled...\n')
 
 
 def cancel_event_in_worksheet(data):
     """
     Attempt to update row in events spreadsheet where Event Code and
-    Date match the input data - print result to screen
+    Date match the input data. Remove associated bookings from bookings
+    spreadsheet.
     """
     print(f'Attempting to cancel event {data} in events spreadsheet\n')
 
     events = SHEET.worksheet('events').get_all_values()
     for x in range(len(events)):
-        if (events[x][0].upper() == data[0].upper()
-           and events[x][2] == data[1]):
+        if (events[x][0].upper() == data[0].upper() and events[x][2] == data[1]
+           and events[x][5].upper() != 'CANCELLED'):
             SHEET.worksheet('events').update_cell(x+1, 6, 'cancelled')
             SHEET.worksheet('events').update_cell(x+1, 7, data[2])
             print('Event cancelled in spreadsheet...\n')
 
             # show any bookings linked to the cancelled event
-            print('Bookings for cancelled event - please notify attendees :\n')
+            print('Bookings removed for cancelled event - '
+                  'please notify attendees :\n')
             bookings = SHEET.worksheet('bookings').get_all_values()
-            bookings = [y for y in bookings
-                        if (y[0].upper() == data[0].upper()
-                            and y[1] == data[1])]
-            table_print(bookings)
+
+            # add headers for the output columns
+            removed_bookings = [['EVENT CODE', 'DATE', 'NAME',
+                                'EMAIL', 'SEATS RESERVED']]
+
+            # go largest number to smallest because if rows are
+            # to be deleted they need to be taken from the bottom
+            # of the sheet and move up to avoid missing rows when
+            # the remaining rows get moved up
+            for y in range(len(bookings)-1, 0, -1):
+                if (bookings[y][0].upper() == data[0].upper()
+                   and bookings[y][1] == data[1]):
+                    removed_bookings.append(bookings[y])
+                    SHEET.worksheet('bookings').delete_rows(y+1)
+
+            table_print(removed_bookings)
+            print('\nEnd of bookings list\n')
             return
 
     print('Event could not be found in events spreadsheet\n')
@@ -379,8 +391,6 @@ def show_active_bookings():
     print('Finding data for active bookings...\n')
     bookings = get_active_bookings()
 
-    print('Formatting data for output...\n')
-
     # add headers for the output columns
     bookings.insert(0, ['EVENT CODE', 'DATE', 'NAME',
                     'EMAIL', 'SEATS RESERVED'])
@@ -393,9 +403,7 @@ def show_active_bookings():
 def get_active_bookings():
     """
     Get the data in the events spreadsheet, eliminate data where the
-    event date <= current date, remove un-needed columns, calculate
-    number of seats available for each event and return the data back
-    to caller
+    booking date < current date. Return the data back to caller
     """
     bookings = SHEET.worksheet('bookings').get_all_values()
     bookings.pop(0)   # remove the header line
@@ -423,9 +431,6 @@ def add_booking():
 
     if len(booking):
         add_to_worksheet('bookings', booking)
-        add_to_worksheet('bookings', ['EV01', 
-                         datetime.strptime('27-02-2021', '%d-%m-%Y'),
-                         'ebr', 'ebr@anemail.com', 99])
         print('New booking added...\n')
 
 
@@ -444,7 +449,6 @@ def cancel_booking():
 
     if len(booking):
         remove_booking_from_worksheet(booking)
-        print('Booking cancelled...\n')
 
 
 def remove_booking_from_worksheet(data):
@@ -485,22 +489,27 @@ def review_past_events():
     # build list of events with date < current date
     past_events = get_past_events()
     past_events.insert(0, ['EVENT CODE', 'TITLE', 'DATE', 'SPEAKER',
-                           'CAPACITY', 'SEATS BOOKED', '% CAPACITY USED',
-                           'STATUS', 'REASON'])
+                           'CAPACITY', 'STATUS', 'REASON',
+                           'SEATS BOOKED', '% CAPACITY USED'])
 
     # divide the list into cancelled events and events that went ahead
     # display cancelled events and reasons for cancellation
-    cancelled_events = [x for x in past_events if (x[7] != '')]
+    # discard the seats booked and % capacity used elements from the
+    # cancelled events list as they are not applicable
+    cancelled_events = [x[0:7] for x in past_events
+                        if (x[5].upper() != '')]
+
     print('List of cancelled events...\n')
     table_print(cancelled_events)
 
     # display events that went ahead
-    delivered_events = [x for x in past_events if (x[7] != 'cancelled')]
+    delivered_events = [x for x in past_events
+                        if (x[5].upper() != 'CANCELLED')]
+    delivered_events = [lambda x: del x[0:3] for x in past_events
+                        if (x[5].upper() != 'CANCELLED')]
 
-    # remove the Status and Reason elements from the lists
-    for x in delivered_events:
-        x.pop()
-        x.pop()
+    # remove the Status and Reason elements from the list
+    delivered_events = [x[0:6] for x in past_events]
 
     print('\nList of delivered events...\n')
     table_print(delivered_events)
@@ -509,7 +518,7 @@ def review_past_events():
     print(f'\nNumber of cancelled events : {len(cancelled_events)-1}')
     print(f'Number of events that went ahead : {len(delivered_events)-1}\n')
 
-    print('\nEnd of data for past events...\n')
+    print('End of data for past events...\n')
 
 
 def get_past_events():
@@ -533,13 +542,12 @@ def get_past_events():
         # add 2 items to the list - one for booked seats,
         # one for calculated % capacity used
         # store as strings to make printing easier later
-        x.insert(5, '0')
-        x.insert(5, '0')
+        x.extend(['0', '0'])
         for y in bookings:
             # check for matching Event Code and Date values
             if x[0].upper() == y[0].upper() and x[2] == y[1]:
-                x[5] = str(int(x[5]) + int(y[4]))   # add to seats_booked
-                x[6] = str(round((int(x[5]) / int(x[4]) * 100), 2))   # calc %
+                x[7] = str(int(x[7]) + int(y[4]))   # add to seats_booked
+                x[8] = str(round((int(x[7]) / int(x[4]) * 100), 2))   # calc %
 
     return events
 
@@ -555,7 +563,7 @@ def main():
         print('2. Manage Bookings')
         print('3. Review Past Events')
         print('4. Exit')
-        print('\nPlease select an option by entering a number between 1 and 5')
+        print('\nPlease select an option by entering a number between 1 and 4')
 
         choice = input('Enter your choice here:\n')
 

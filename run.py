@@ -1,7 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 # import system and name for the clear screen function
-from os import system, name
+# from os import system, name
 from datetime import datetime
 import re
 import os
@@ -20,13 +20,13 @@ SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
 # define function to clear the screen
 def clear():
-    print(name)
+    os.system('clear')
     # for windows
     # if name == 'nt':
-        # _ = system('cls')
+    # _ = system('cls')
     # for mac and linux(here, os.name is 'posix')
     # else:
-       # _ = system('clear')
+    # _ = system('clear')
 
 
 def pause(function):

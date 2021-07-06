@@ -266,8 +266,8 @@ def show_active_events():
     events = get_active_events()
 
     # add headers for the output columns
-    events.insert(0, ['EVENT CODE', 'TITLE', 'DATE',
-                  'SPEAKER', 'SEATS AVAILABLE'])
+    events.insert(0, ['CODE', 'TITLE', 'DATE',
+                  'SPEAKER', 'SEATS OPEN'])
 
     table_print(events)
 
@@ -318,7 +318,7 @@ def add_event():
     # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
                      'Event Code, Title, Date(DD-MM-YYYY), Speaker, Capacity',
-                     'Example: HS01, History 101, 29-04-2022, Joe Smith, 15')
+                     'Example: HS01, History, 29-04-2022, Joe Smith, 15')
 
     if (len(event)):
         add_to_worksheet('events', event)
@@ -362,8 +362,8 @@ def cancel_event_in_worksheet(data):
             bookings = SHEET.worksheet('bookings').get_all_values()
 
             # add headers for the output columns
-            removed_bookings = [['EVENT CODE', 'DATE', 'NAME',
-                                'EMAIL', 'SEATS RESERVED']]
+            removed_bookings = [['CODE', 'DATE', 'NAME',
+                                'EMAIL', 'SEATS']]
 
             # go largest number to smallest because if rows are
             # to be deleted they need to be taken from the bottom
@@ -392,8 +392,8 @@ def show_active_bookings():
     bookings = get_active_bookings()
 
     # add headers for the output columns
-    bookings.insert(0, ['EVENT CODE', 'DATE', 'NAME',
-                    'EMAIL', 'SEATS RESERVED'])
+    bookings.insert(0, ['CODE', 'DATE', 'NAME',
+                    'EMAIL', 'SEATS'])
 
     table_print(bookings)
 
@@ -488,15 +488,15 @@ def review_past_events():
 
     # build list of events with date < current date
     past_events = get_past_events()
-    past_events.insert(0, ['EVENT CODE', 'TITLE', 'DATE', 'SPEAKER',
+    past_events.insert(0, ['CODE', 'TITLE', 'DATE', 'SPEAKER',
                            'CAPACITY', 'STATUS', 'REASON',
-                           'SEATS BOOKED', '% CAPACITY USED'])
+                           'BOOKED', '% FILLED'])
 
     # divide the list into cancelled events and events that went ahead
     # display cancelled events and reasons for cancellation
-    # discard the seats booked and % capacity used elements from the
-    # cancelled events list as they are not applicable
-    cancelled_events = [x[0:7] for x in past_events
+    # discard the status, seats booked and % capacity used elements from
+    # the cancelled events list as they are not applicable
+    cancelled_events = [x[0:5] + x[6:7] for x in past_events
                         if (x[5].upper() != '')]
 
     print('List of cancelled events...\n')

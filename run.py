@@ -34,7 +34,7 @@ def pause(function):
     """
     def wrapper():
         function()
-        input('Press Enter to continue...')
+        input('Press Enter to continue...\n')
     return wrapper
 
 
@@ -80,7 +80,7 @@ def sub_menu(instr, list_func, add_func, cancel_func):
             break
         else:
             print('Invalid selection. Please enter 1, 2, 3 or 4\n')
-            input('Press Enter to continue...')
+            input('Press Enter to continue...\n')
 
 
 def add_to_worksheet(worksheet, data):
@@ -134,7 +134,7 @@ def get_data(funcdesc, items, example):
 
         # getting to here means inputs were not valid
         # wait to allow user to read error message on screen
-        input('\nPress Enter to continue...')
+        input('\nPress Enter to continue...\n')
 
     return datalist
 
@@ -575,7 +575,7 @@ def main():
             break
         else:
             print('Invalid selection. Please enter a digit between 1 and 4\n')
-            input('Press Enter to continue...')
+            input('Press Enter to continue...\n')
 
 
 main()

@@ -1,7 +1,5 @@
 import gspread
 from google.oauth2.service_account import Credentials
-# import system and name for the clear screen function
-# from os import system, name
 from datetime import datetime
 import re
 

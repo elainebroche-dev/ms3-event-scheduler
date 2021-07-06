@@ -101,6 +101,13 @@ review events should show data < todays date
 
 - to be written
 
+    for windows
+    if name == 'nt':
+        _ = system('cls')
+   for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
 ## Deployment
 
 ### How this site was deployed - to be written
@@ -147,7 +154,7 @@ Click on the Settings tab and then scroll down to the Config Vars section to set
 
 *** Be careful here !!! we need details on how exactly to create the creds.json file as this is not something that is available
 to someone other than ourselves - so need to back up here on this *****
-Click on Reveal Config Vars.  In the field for key enter 'CREDS' and paste the entire contents of the creds.json file into the VALUE field
+Click on Reveal Config Vars.  In the field for key enter 'CREDS' and paste the entire contents of the creds.json file into the VALUE field and click ADD
 
 Next, scroll down the Settings page to Buildpacks.  Click Add buildpack, select Python from the pop up window and click on Save changes.  Click Add buildpack again, select Node.js from the pop up window and click on Save changes.  It is important that the buildpacks are listed on the page in the order shown in the diagram.
 
@@ -156,7 +163,13 @@ Now go to the Deploy tab for the application configuration.
 Select GitHub as the Deployment Method and if prompted, confirm that you want to connect to GitHub.  Enter the name of the github
 repository (ms3-event-scheduler) and click on Connect to link up the Heroku app to the GitHub repository code.
 
-Scroll down the page and decide if you want to Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project, Automatically Deploy was selected.
+Scroll down the page and decide if you want to Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project.
+Manual Deploy was selected and then Deploy Branch clicked. Log messages displayed to show the build messages.
+
+Click on View to launch the application.
+Address for this deployed app is ()
+
+redeploy from the deploy page after each push
 
 
 
@@ -198,6 +211,7 @@ Scroll down the page and decide if you want to Automatically Deploy each time ch
 - (https://stackoverflow.com/questions/47547403/regular-expression-for-mm-dd-yy-date-format-not-finding-any-match-in-python) - ideas on how to verify date
 - (https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) regular expression to validate email address
 - (https://www.datacamp.com/community/tutorials/python-list-methods?utm_source=adwords_ppc&utm_campaignid=898687156&utm_adgroupid=48947256715&utm_device=c&utm_keyword=&utm_matchtype=b&utm_network=g&utm_adpostion=&utm_creative=229765585183&utm_targetid=dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9047196&gclid=CjwKCAjw_o-HBhAsEiwANqYhp7Kw0hp2dNCHcgDIIW4aLzI7CKRIUFqkaZSPoqyrk2MnuRVC7bYLbxoC3JYQAvD_BwE) - information on extend
+- (https://stackoverflow.com/questions/2084508/clear-terminal-in-python/2084521)  - info on ascii escape sequence to clear screen
 
 
 ### Media 

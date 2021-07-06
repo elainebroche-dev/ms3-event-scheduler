@@ -4,6 +4,7 @@ from google.oauth2.service_account import Credentials
 from os import system, name
 from datetime import datetime
 import re
+import os
 
 SCOPE = [
     'https://www.googleapis.com/auth/spreadsheets',
@@ -19,6 +20,7 @@ SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
 # define function to clear the screen
 def clear():
+    os.system('tput reset')
     # for windows
     if name == 'nt':
         _ = system('cls')

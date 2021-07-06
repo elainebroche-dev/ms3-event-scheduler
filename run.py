@@ -318,7 +318,7 @@ def add_event():
     # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
                      'Event Code, Title, Date(DD-MM-YYYY), Speaker, Capacity',
-                     'Example: HS01, History, 29-04-2022, Joe Smith, 15')
+                     'Example: HS01, History, 29-04-2022, Joe, 15')
 
     if (len(event)):
         add_to_worksheet('events', event)
@@ -489,8 +489,8 @@ def review_past_events():
     # build list of events with date < current date
     past_events = get_past_events()
     past_events.insert(0, ['CODE', 'TITLE', 'DATE', 'SPEAKER',
-                           'CAPACITY', 'STATUS', 'REASON',
-                           'BOOKED', '% FILLED'])
+                           'CPTY', 'STATUS', 'REASON',
+                           'BKD', '% FILL'])
 
     # divide the list into cancelled events and events that went ahead
     # display cancelled events and reasons for cancellation

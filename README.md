@@ -25,6 +25,13 @@ To be written
 
 ### Existing Features
 
+how do I want dates to work ? - this needs to go into the readme to clarify
+upcoming should show today and the future for both bookings and events
+Can cancel events or bookings for >= today
+Can create events or bookings for >= today
+review events should show data < todays date
+
+
 -   __F01 To be written__
     - To be written
 
@@ -130,6 +137,7 @@ To be written
 - (https://stackoverflow.com/questions/22304500/multiple-or-condition-in-python) - usage of 'in'
 - (https://stackoverflow.com/questions/47547403/regular-expression-for-mm-dd-yy-date-format-not-finding-any-match-in-python) - ideas on how to verify date
 - (https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) regular expression to validate email address
+- (https://www.datacamp.com/community/tutorials/python-list-methods?utm_source=adwords_ppc&utm_campaignid=898687156&utm_adgroupid=48947256715&utm_device=c&utm_keyword=&utm_matchtype=b&utm_network=g&utm_adpostion=&utm_creative=229765585183&utm_targetid=dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9047196&gclid=CjwKCAjw_o-HBhAsEiwANqYhp7Kw0hp2dNCHcgDIIW4aLzI7CKRIUFqkaZSPoqyrk2MnuRVC7bYLbxoC3JYQAvD_BwE) - information on extend
 
 
 ### Media 

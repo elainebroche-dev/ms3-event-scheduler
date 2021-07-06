@@ -267,7 +267,7 @@ def show_active_events():
 
     # add headers for the output columns
     events.insert(0, ['CODE', 'TITLE', 'DATE',
-                  'SPEAKER', 'SEATS OPEN'])
+                  'HOST', 'SEATS OPEN'])
 
     table_print(events)
 
@@ -312,12 +312,12 @@ def get_active_events():
 @pause
 def add_event():
     """
-    Capture and validate Event Code, Title, Date, Speaker, Capacity data
+    Capture and validate Event Code, Title, Date, Host, Capacity data
     and store in the Events Spreadsheet
     """
     # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
-                     'Event Code, Title, Date(DD-MM-YYYY), Speaker, Capacity',
+                     'Event Code, Title, Date(DD-MM-YYYY), Host, Capacity',
                      'Example: HS01, History, 29-04-2022, Joe, 15')
 
     if (len(event)):
@@ -334,7 +334,7 @@ def cancel_event():
     """
     event = get_data('CANCEL EVENT',
                      'Event Code, Date(DD-MM-YYYY), Reason',
-                     'Example: HS01, 29-04-2022, Speaker not available')
+                     'Example: HS01, 29-04-2022, Host not available')
 
     if (len(event)):
         cancel_event_in_worksheet(event)
@@ -488,7 +488,7 @@ def review_past_events():
 
     # build list of events with date < current date
     past_events = get_past_events()
-    past_events.insert(0, ['CODE', 'TITLE', 'DATE', 'SPEAKER',
+    past_events.insert(0, ['CODE', 'TITLE', 'DATE', 'HOST',
                            'CPTY', 'STATUS', 'REASON',
                            'BKD', '% FILL'])
 

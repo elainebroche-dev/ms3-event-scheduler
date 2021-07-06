@@ -211,7 +211,7 @@ def validate_data(funcdesc, items, values):
                 raise ValueError('Bookings in the past cannot be cancelled')
 
     except ValueError as e:
-        print(f"Invalid data: {e}, please try again.")
+        print(f'Invalid data: {e}, please try again.')
         return False
 
     print('Input values are valid...\n')
@@ -226,8 +226,8 @@ def event_exists(event_code, event_date):
     """
     events = SHEET.worksheet('events').get_all_values()
     for x in events:
-        if (x[0].upper() == event_code.upper() and x[2] == event_date
-           and x[5].upper() != 'CANCELLED'):
+        if (x[0].upper() == event_code.upper() and
+           x[2] == event_date and x[5].upper() != 'CANCELLED'):
             return True
     return False
 
@@ -287,8 +287,8 @@ def get_active_events():
     # restrict the list to just events that are >= current date
     # and not cancelled
     events = [x for x in events
-              if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now())
-              and (x[5].upper() != 'CANCELLED')]
+              if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now()) and
+                 (x[5].upper() != 'CANCELLED')]
 
     # sort the events into chronological order
     events.sort(key=lambda x: datetime.strptime(x[2], '%d-%m-%Y'))
@@ -299,7 +299,7 @@ def get_active_events():
         x.pop()
 
     # deduct booked seats from capacity to give available seat totals
-    bookings = SHEET.worksheet("bookings").get_all_values()
+    bookings = SHEET.worksheet('bookings').get_all_values()
     for x in events:
         for y in bookings:
             # check for matching Event Code and Date values
@@ -350,8 +350,8 @@ def cancel_event_in_worksheet(data):
 
     events = SHEET.worksheet('events').get_all_values()
     for x in range(len(events)):
-        if (events[x][0].upper() == data[0].upper() and events[x][2] == data[1]
-           and events[x][5].upper() != 'CANCELLED'):
+        if (events[x][0].upper() == data[0].upper() and
+           events[x][2] == data[1] and events[x][5].upper() != 'CANCELLED'):
             SHEET.worksheet('events').update_cell(x+1, 6, 'cancelled')
             SHEET.worksheet('events').update_cell(x+1, 7, data[2])
             print('Event cancelled in spreadsheet...\n')
@@ -370,8 +370,8 @@ def cancel_event_in_worksheet(data):
             # of the sheet and move up to avoid missing rows when
             # the remaining rows get moved up
             for y in range(len(bookings)-1, 0, -1):
-                if (bookings[y][0].upper() == data[0].upper()
-                   and bookings[y][1] == data[1]):
+                if (bookings[y][0].upper() == data[0].upper() and
+                   bookings[y][1] == data[1]):
                     removed_bookings.append(bookings[y])
                     SHEET.worksheet('bookings').delete_rows(y+1)
 
@@ -463,9 +463,9 @@ def remove_booking_from_worksheet(data):
 
     bookings = SHEET.worksheet('bookings').get_all_values()
     for x in range(len(bookings)):
-        if (bookings[x][0].upper() == data[0].upper()
-           and bookings[x][1] == data[1]
-           and bookings[x][3].upper() == data[2].upper()):
+        if (bookings[x][0].upper() == data[0].upper() and
+           bookings[x][1] == data[1] and
+           bookings[x][3].upper() == data[2].upper()):
             SHEET.worksheet('bookings').delete_rows(x+1)
             print('Booking removed from spreadsheet...\n')
             return
@@ -525,7 +525,7 @@ def get_past_events():
     events = SHEET.worksheet('events').get_all_values()
     events.pop(0)   # remove the header line
 
-    # restrict the list to just events that are in the past 
+    # restrict the list to just events that are in the past
     events = [x for x in events
               if (datetime.strptime(x[2], '%d-%m-%Y') < datetime.now())]
 

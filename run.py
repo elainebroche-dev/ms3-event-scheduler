@@ -182,8 +182,8 @@ def validate_data(funcdesc, items, values):
         if (funcdesc == 'ADD A NEW EVENT'):
             # a. date must be in the future
             # b. event code/date combination must be unique
-            if (datetime.strptime(tmpdate, '%d-%m-%Y') <= datetime.now()):
-                raise ValueError('Event dates must be > current date')
+            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
+                raise ValueError('Event dates must be >= current date')
             elif event_exists(tmpdate, tmpcode):
                 raise ValueError('Duplicate Event Code and Date found')
 
@@ -277,14 +277,14 @@ def show_active_events():
 def get_active_events():
     """
     Get the data in the events spreadsheet, eliminate data where the
-    event date <= current date, remove un-needed columns, calculate
+    event date < current date, remove un-needed columns, calculate
     number of seats available for each event and return the data back
     to caller
     """
     events = SHEET.worksheet('events').get_all_values()
     events.pop(0)   # remove the header line
 
-    # restrict the list to just events that are in the future
+    # restrict the list to just events that are >= current date
     # and not cancelled
     events = [x for x in events
               if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now())
@@ -408,7 +408,7 @@ def get_active_bookings():
     bookings = SHEET.worksheet('bookings').get_all_values()
     bookings.pop(0)   # remove the header line
 
-    # restrict the list to just bookings that are in the future
+    # restrict the list to just bookings that are >= current date
     bookings = [x for x in bookings
                 if (datetime.strptime(x[1], '%d-%m-%Y') >= datetime.now())]
 
@@ -503,13 +503,9 @@ def review_past_events():
     table_print(cancelled_events)
 
     # display events that went ahead
-    delivered_events = [x for x in past_events
+    # remove the Status and Reason elements from the delivered events list
+    delivered_events = [x[0:5] + x[7:9] for x in past_events
                         if (x[5].upper() != 'CANCELLED')]
-    delivered_events = [lambda x: del x[0:3] for x in past_events
-                        if (x[5].upper() != 'CANCELLED')]
-
-    # remove the Status and Reason elements from the list
-    delivered_events = [x[0:6] for x in past_events]
 
     print('\nList of delivered events...\n')
     table_print(delivered_events)
@@ -529,9 +525,9 @@ def get_past_events():
     events = SHEET.worksheet('events').get_all_values()
     events.pop(0)   # remove the header line
 
-    # restrict the list to just events that are in the past or for today
+    # restrict the list to just events that are in the past 
     events = [x for x in events
-              if (datetime.strptime(x[2], '%d-%m-%Y') <= datetime.now())]
+              if (datetime.strptime(x[2], '%d-%m-%Y') < datetime.now())]
 
     # sort the events into chronological order
     events.sort(key=lambda x: datetime.strptime(x[2], '%d-%m-%Y'))

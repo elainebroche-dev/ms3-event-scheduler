@@ -76,12 +76,15 @@ review events should show data < todays date
 
 ## Testing
 
-### Validator Testing 
+### Validator Testing
+
 
 - [????](to be written)
 
     - result for ?????
       ![??????](documentation/validation/to be written)
+
+      need to use http://pep8online.com/
     
 ### Test Cases and Results
 
@@ -105,6 +108,63 @@ review events should show data < todays date
 - to be written
 
   The live link can be found here - [???????](to be written) 
+
+
+  notes on deployment :
+  usual git stuff needed
+
+The Code Institute Python Essentials template was used to build the project Gitpod workspace.  This template
+includes files and code to support deployment in a mock terminal on a web page.
+
+A newline character was added to the end of each string used with the input function because due to how the
+software to create the mock terminal works, the newline is needed so that the text for the input request shows
+on screen.
+
+The requirements.txt file in the project was updated to include details on the project dependencies.
+Steps to do this are :
+
+1. Enter the following command at the terminal prompt : 'pip3 freeze > requirements.txt'
+2. Commit resulting changes to requirements.txt and push to github
+
+Login to your Heroku account.  If you don't have one, create one on www.heroku.com.  Enter your name, email and 'Student' can be selected for the Role value.  Choose a value for Country based on your location and select "Python" as the Primary development language.  
+
+Once the Create button has been clicked, Heroku will send a confirmation email, to complete account creation click on
+the link in this email.
+
+Heroku will then bring you to a page to set up your password and log in.
+
+Accept the Heroku terms of service and then you will be brought to the dashboard for your account.
+
+If this is a new account an icon will be visible on screen to allow you to Create an app, alternatively you can find a link to this function under the New dropdown menu at the top right of the screen.
+
+From the Heroku dashboard, click the Create new app button.
+
+On the Create New App page, enter a unique name for the application and select your region.  Then click Create app.
+
+You will then be brought to the application configuration page for your new app.  The important tabs on this page are Deploy and Settings.
+
+Click on the Settings tab and then scroll down to the Config Vars section to set up the private Environment Variables for the application - i.e. the credentials used by our application to access the spreadsheet data.
+
+*** Be careful here !!! we need details on how exactly to create the creds.json file as this is not something that is available
+to someone other than ourselves - so need to back up here on this *****
+Click on Reveal Config Vars.  In the field for key enter 'CREDS' and paste the entire contents of the creds.json file into the VALUE field
+
+Next, scroll down the Settings page to Buildpacks.  Click Add buildpack, select Python from the pop up window and click on Save changes.  Click Add buildpack again, select Node.js from the pop up window and click on Save changes.  It is important that the buildpacks are listed on the page in the order shown in the diagram.
+
+Now go to the Deploy tab for the application configuration.
+
+Select GitHub as the Deployment Method and if prompted, confirm that you want to connect to GitHub.  Enter the name of the github
+repository (ms3-event-scheduler) and click on Connect to link up the Heroku app to the GitHub repository code.
+
+Scroll down the page and decide if you want to Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project, Automatically Deploy was selected.
+
+
+
+
+
+
+
+
 
 ### How to clone the repository - to be written
 

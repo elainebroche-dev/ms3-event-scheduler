@@ -20,15 +20,13 @@ SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
 # define function to clear the screen
 def clear():
-    os.system('tput reset')
-    os.system('cls')
-    os.system('clear')
+    print(name)
     # for windows
-    if name == 'nt':
-        _ = system('cls')
+    # if name == 'nt':
+        # _ = system('cls')
     # for mac and linux(here, os.name is 'posix')
-    else:
-        _ = system('clear')
+    # else:
+       # _ = system('clear')
 
 
 def pause(function):

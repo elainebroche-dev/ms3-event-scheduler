@@ -177,7 +177,7 @@ def validate_data(funcdesc, items, values):
             # b. event code/date combination must be unique
             if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
                 raise ValueError('Event dates must be >= current date')
-            elif event_exists(tmpdate, tmpcode):
+            elif event_exists(tmpcode, tmpdate):
                 raise ValueError('Duplicate Event Code and Date found')
 
         elif (funcdesc == 'CANCEL EVENT'):

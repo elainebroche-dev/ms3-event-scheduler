@@ -1,6 +1,6 @@
 <h1 align="center">Event Scheduler</h1>
 
-[View the live project here](https:// to be written)
+[View the live project here]()
 
 To be written
 
@@ -19,7 +19,18 @@ To be written
 
 -   ### User stories - as a user I want to be able to :
 
-1. To be written
+  1. View information on upcoming scheduled events in the events spreadsheet - event ID code, title, scheduled date, host and number of seats available to book
+  2. Use the application to book new events and have these stored in the events spreadsheet.  
+  3. Cancel events and log a reason for cancellation in the events spreadsheet.
+  4. Automatically remove all bookings linked to a cancelled event from the bookings spreadsheet and return a list on screen of those details so that attendees can be notified.
+  5. View information on bookings for upcoming scheduled events - event ID code, scheduled date, attendee name, attendee email, number of seats booked
+  6. Add a new booking for an upcoming event.
+  7. Cancel a booking in the bookings spreadsheet.
+  8. Review and analyse data for past events, this information should include :
+      - details on cancelled events including the reason given for cancellation
+      - details on events that went ahead including the number of seats that were available and % seats booked 
+      - a total number of cancelled events
+      - a total number of events that went ahead
 
 ## Features
 

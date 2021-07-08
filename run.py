@@ -158,6 +158,9 @@ def validate_data(funcdesc, items, values):
                 # using a regex to check 2 digit day and month entered
                 if not re.search(r'^\d{2}-\d{2}-\d{4}$', tmpdate):
                     raise ValueError('2 digit day and month required in Date')
+                if (datetime.strptime(tmpdate, '%d-%m-%Y').date() <
+                   datetime.today().date()):
+                    raise ValueError('Date must be >= current date')
             elif items[x].upper() in ('CAPACITY', 'SEATS'):
                 tmpnum = int(values[x])                   # ? ValueError
                 # check value is > 0
@@ -173,35 +176,19 @@ def validate_data(funcdesc, items, values):
         # operation being requested
 
         if (funcdesc == 'ADD A NEW EVENT'):
-            # a. date must be in the future
-            # b. event code/date combination must be unique
-            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
-                raise ValueError('Event dates must be >= current date')
-            elif event_exists(tmpcode, tmpdate):
+            # a. event code/date combination must be unique
+            if event_exists(tmpcode, tmpdate):
                 raise ValueError('Duplicate Event Code and Date found')
 
-        elif (funcdesc == 'CANCEL EVENT'):
-            # a. date must not be in the past
-            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
-                raise ValueError('Events in the past cannot be cancelled')
-
         elif (funcdesc == 'ADD A NEW BOOKING'):
-            # a. date must not be in the past
-            # b. event must exist in events sheet
-            # c. seats requested must be <= seats available2
-            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
-                raise ValueError('Booking dates must be >= current date')
-            elif not event_exists(tmpcode, tmpdate):
+            # a. event must exist in events sheet
+            # b. seats requested must be <= seats available
+            if not event_exists(tmpcode, tmpdate):
                 raise ValueError('Booking cannot be added. '
                                  'Event does not exist')
             elif (num_seats_available(tmpcode, tmpdate) < tmpnum):
                 raise ValueError('Booking cannot be added. '
                                  'Not enough seats available')
-
-        elif (funcdesc == 'CANCEL BOOKING'):
-            # a. date must not be in the past
-            if (datetime.strptime(tmpdate, '%d-%m-%Y') < datetime.now()):
-                raise ValueError('Bookings in the past cannot be cancelled')
 
     except ValueError as e:
         print(f'Invalid data: {e}, please try again.')
@@ -280,7 +267,8 @@ def get_active_events():
     # restrict the list to just events that are >= current date
     # and not cancelled
     events = [x for x in events
-              if (datetime.strptime(x[2], '%d-%m-%Y') >= datetime.now()) and
+              if (datetime.strptime(x[2], '%d-%m-%Y').date() >=
+                  datetime.today().date()) and
                  (x[5].upper() != 'CANCELLED')]
 
     # sort the events into chronological order
@@ -403,7 +391,8 @@ def get_active_bookings():
 
     # restrict the list to just bookings that are >= current date
     bookings = [x for x in bookings
-                if (datetime.strptime(x[1], '%d-%m-%Y') >= datetime.now())]
+                if (datetime.strptime(x[1], '%d-%m-%Y').date() >=
+                    datetime.today().date())]
 
     # sort the bookings into chronological order of event
     bookings.sort(key=lambda x: datetime.strptime(x[1], '%d-%m-%Y'))
@@ -520,7 +509,8 @@ def get_past_events():
 
     # restrict the list to just events that are in the past
     events = [x for x in events
-              if (datetime.strptime(x[2], '%d-%m-%Y') < datetime.now())]
+              if (datetime.strptime(x[2], '%d-%m-%Y').date() <
+                  datetime.today().date())]
 
     # sort the events into chronological order
     events.sort(key=lambda x: datetime.strptime(x[2], '%d-%m-%Y'))

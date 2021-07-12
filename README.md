@@ -1,10 +1,12 @@
 <h1 align="center">Event Scheduler</h1>
 
-[View the live project here]()
+[View the live project here - to be written]()
 
-To be written
+Event Scheduler is a command line application to manage data relating to events such as talks/lectures and bookings for those events.
 
-![Mockup](documentation/images/resp-mockup.png)
+The user can interact with the application to view upcoming events and bookings, review past events and see how popular they were (% seats booked), add new events, cancel upcoming events, create and delete bookings linked to upcoming events. 
+
+The event and booking data is stored in an external Google Spreadsheet.
 
 ## Index – Table of Contents
 * [User Experience (UX)](#user-experience-ux) 
@@ -19,18 +21,21 @@ To be written
 
 -   ### User stories - as a user I want to be able to :
 
-  1. View information on upcoming scheduled events in the events spreadsheet - event ID code, title, scheduled date, host and number of seats available to book
-  2. Use the application to book new events and have these stored in the events spreadsheet.  
-  3. Cancel events and log a reason for cancellation in the events spreadsheet.
-  4. Automatically remove all bookings linked to a cancelled event from the bookings spreadsheet and return a list on screen of those details so that attendees can be notified.
-  5. View information on bookings for upcoming scheduled events - event ID code, scheduled date, attendee name, attendee email, number of seats booked
-  6. Add a new booking for an upcoming event.
-  7. Cancel a booking in the bookings spreadsheet.
-  8. Review and analyse data for past events, this information should include :
+  1. Easily navigate between the different functions availabe in the application.
+  2. View information on upcoming scheduled events in the events spreadsheet - event ID code, title, scheduled date, host and number of seats available to book
+  3. Use the application to book new events and have these stored in the events spreadsheet.  
+  4. Cancel events and log a reason for cancellation in the events spreadsheet.
+  5. Automatically remove all bookings linked to a cancelled event from the bookings spreadsheet and return a list on screen of those details so that attendees can be notified.
+  6. View information on bookings for upcoming scheduled events - event ID code, scheduled date, attendee name, attendee email, number of seats booked
+  7. Add a new booking for an upcoming event.
+  8. Cancel a booking in the bookings spreadsheet.
+  9. Review and analyse data for past events, this information should include :
       - details on cancelled events including the reason given for cancellation
       - details on events that went ahead including the number of seats that were available and % seats booked 
       - a total number of cancelled events
       - a total number of events that went ahead
+  10. Clearly understand how to interact with the application and get feedback on updates to the underlying data.
+  
 
 ## Features
 
@@ -50,9 +55,9 @@ review events should show data < todays date
 
 - __How these features support the User Stories__
 
-    - The User Stories in the [User Experience (UX)](#user-experience-ux) part of this document are numbered ??????.  The existing features are listed above as F01 to F?????.  Below is a traceability matrix cross-referencing the user stories with the features, illustrating which features support which stories :
+    - The User Stories in the [User Experience (UX)](#user-experience-ux) part of this document are numbered 1 to 10.  The existing features are listed above as F01 to F11.  Below is a traceability matrix cross-referencing the user stories with the features, illustrating which features support which stories :
 
-        ![User Story Feature Matrix](documentation/images/to be written)
+        ![User Story Feature Matrix](documentation/images/us-feat-matrix.png)
 
 ### Features which could be implemented in the future
 
@@ -60,43 +65,50 @@ review events should show data < todays date
 
 
 ## Design
-- REVIEW RULES AROUNT >= <=> dates and - explain business rules and check code and diagrams match
+
 -   ### Flow Charts
-     ![Main Flowchart](documentation/flowcharts/ms3-main-flowchart.png)
-     ![View Upcoming Events](documentation/flowcharts/ms3-option-1-view-upcoming-events.png)
-     ![Manage Events](documentation/flowcharts/ms3-option-2-manage-events.png)
-     ![Manage Bookings](documentation/flowcharts/ms3-option-3-manage-bookings.png)
-     ![Review Past Events](documentation/flowcharts/ms3-option-4-review-past-events.png)
+    The diagrams below outline the high level flow of control within the application :
+
+    <details>
+       <summary>Diagrams</summary>
+
+       ![Main Flowchart](documentation/flowcharts/ms3-main-flowchart.png)
+       ![Manage Events A](documentation/flowcharts/ms3-option-1-A-manage-events.png)
+       ![Manage Events B](documentation/flowcharts/ms3-option-1-B-manage-events.png)
+       ![Manage Bookings A](documentation/flowcharts/ms3-option-2-A-manage-bookings.png)
+       ![Manage Bookings B](documentation/flowcharts/ms3-option-2-B-manage-bookings.png)
+       ![Review Past Events](documentation/flowcharts/ms3-option-3-review-past-events.png)
+    </details>
+
     
 ## Technologies Used
 
 ### Languages Used
 
--   [?????](to be written)
+-   [Python 3.8.10](https://www.python.org/)
 
 ### Frameworks, Libraries & Programs Used
 
--   [Google Spreadsheets](https://en.wikipedia.org/wiki/Google_Sheets) used as the external data store for the Events and Bookings data used by the project.
--   [Google Drive API](https://developers.google.com/drive/api/v3/about-sdk) used to generate credentials used in the project to securely access the Google Spreadsheet. 
--   [Google Sheets API](https://developers.google.com/sheets/api) used to support interactions (e.g. read/write functionality) between the code and data stored in the Google Spreadsheet.
--   [gspread](https://docs.gspread.org/en/latest/) Python API for Google Sheets
--   [Google Auth](https://google-auth.readthedocs.io/en/master/) Google authentication library for Python required to use the credentials generated for Google Drive API
+-   [Google Spreadsheets:](https://en.wikipedia.org/wiki/Google_Sheets) used as the external data store for the Events and Bookings data used by the project.
+-   [Google Drive API:](https://developers.google.com/drive/api/v3/about-sdk) used to generate credentials used in the project to securely access the Google Spreadsheet. 
+-   [Google Sheets API:](https://developers.google.com/sheets/api) used to support interactions (e.g. read/write functionality) between the code and data stored in the Google Spreadsheet.
+-   [gspread:](https://docs.gspread.org/en/latest/) Python API for Google Sheets
+-   [Google Auth:](https://google-auth.readthedocs.io/en/master/) Google authentication library for Python required to use the credentials generated for Google Drive API
 -   [Google Drawings](https://en.wikipedia.org/wiki/Google_Drawings) used to create the flowcharts outlining the functionality of the project.
 -   [Git:](https://git-scm.com/) was used for version control by utilising the Gitpod terminal to commit to Git and Push to GitHub.
 -   [GitHub:](https://github.com/) is used as the respository for the projects code after being pushed from Git.
+-   [Heroku:](https://heroku.com) is used to deploy the application and provides an enviroment in which the code can execute
 
 ## Testing
 
 ### Validator Testing
 
+- [Python Validator](http://pep8online.com/)
 
-- [????](to be written)
+    - result for `run.py`
 
-    - result for ?????
-      ![??????](documentation/validation/to be written)
+      ![Python Validation Results](documentation/validation/python-pep8online-validation-results.png)
 
-      need to use http://pep8online.com/
-    
 ### Test Cases and Results
 
 - The below table details the test cases that were used, the results and a cross-reference to the Feature ID that each test case exercised (click to open image):
@@ -104,20 +116,31 @@ review events should show data < todays date
   <details>
     <summary>Test Cases</summary>
 
-    ![Test Cases](documentation/images/to be written)
+    ![Test Cases](documentation/images/test-cases.png)
   </details>
   
 
 ### Known bugs
 
-- to be written
+- Problem with clear screen.
 
-    for windows
-    if name == 'nt':
-        _ = system('cls')
-   for mac and linux(here, os.name is 'posix')
-    else:
-        _ = system('clear')
+    Originally the clear function was implemented using the below code snippet :
+        
+          if name == 'nt':
+            _ = system('cls')
+          else:
+            _ = system('clear')
+
+    the reference for this code is: [Clear Screen](https://www.geeksforgeeks.org/clear-screen-python/).  
+
+    This worked fine when testing within the gitpod environment, but did not work when the application was deployed to Heroku.  No error messages or warnings were displayed when the application was run on the Heroku platform, the clear screen simply did not do anything.
+    To solve this problem I replaced the above code with this code :
+
+        print('\033c')
+
+    the reference for this code is: [Clear Screen - ASCII sequence](https://stackoverflow.com/questions/2084508/clear-terminal-in-python/2084521).
+    This appears to to work when tested in the gitpod environment and in the version deployed to Heroku.
+
 
 ## Deployment
 

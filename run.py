@@ -541,7 +541,7 @@ def main():
     """
     while True:
         clear()
-        print('Test Main Menu for Event Scheduler Application:\n')
+        print('Main Menu for Event Scheduler Application:\n')
         print('1. Manage Events')
         print('2. Manage Bookings')
         print('3. Review Past Events')

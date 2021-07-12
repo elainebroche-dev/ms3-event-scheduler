@@ -2,6 +2,8 @@
 
 [View the live project here - to be written]()
 
+[Access the spreadsheet data here](https://docs.google.com/spreadsheets/d/1-dS9LBZ54kH8T2ngIkTrf40maT9B2i80f6KnuEASd94/edit?usp=sharing)
+
 Event Scheduler is a command line application to manage data relating to events such as talks/lectures and bookings for those events.
 
 The user can interact with the application to view upcoming events and bookings, review past events and see how popular they were (% seats booked), add new events, cancel upcoming events, create and delete bookings linked to upcoming events. 
@@ -53,6 +55,56 @@ review events should show data < todays date
 
       ![To be written](documentation/images/f01-to be written)
 
+-   __F02 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f02-to be written)
+
+-   __F03 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f03-to be written)
+
+-   __F04 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f04-to be written)
+
+-   __F05 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f05-to be written)
+  
+-   __F06 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f06-to be written)
+
+-   __F07 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f07-to be written)
+
+-   __F08 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f08-to be written)
+
+-   __F09 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f09-to be written)
+
+-   __F10 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f10-to be written)
+
+-   __F11 To be written__
+    - To be written
+
+      ![To be written](documentation/images/f11-to be written)
+
 - __How these features support the User Stories__
 
     - The User Stories in the [User Experience (UX)](#user-experience-ux) part of this document are numbered 1 to 10.  The existing features are listed above as F01 to F11.  Below is a traceability matrix cross-referencing the user stories with the features, illustrating which features support which stories :
@@ -61,8 +113,17 @@ review events should show data < todays date
 
 ### Features which could be implemented in the future
 
-- __To be written__
+- __Appropriate UI__
 
+  As this application uses the command line interface it is not very user friendly for a human end-user.  An obvious future feature of this application would be to build a better user-interace layer using HTML/CSS and possibly Javascript to make it much more intuititve to use.
+
+- __Extended Data Model__
+
+  The data model representing the Events and Bookings is very simplistic in what data elements it stores.  This could be extended to store additional data with more complex data relationship rules.  The data model and code could also be re-structured to use a better Object Oriented approach, where Events and Bookings could be handled as Object types with methods and attributes.
+
+- __Extended Data Analysis__
+
+  The Review Past Events feature of the application gives a breakdown of cancelled events vs events that weren't cancelled and shows % seats booked for those that went ahead.  Analysis of the data could be extended to find other information from the data, such as how frequently are certain events cancelled due to lack of bookings, which courses are most popular etc. and then this information could help the users plan ahead when trying to schedule events.  This type of information could also potentially be used to automate some tasks - e.g. automatically send an administrator an email highlighting a particular event has below a certain threshold of bookings coming up to it's scheduled date, so that the administrator has time to take action - e.g. send out a marketing email to draw attention to the event.
 
 ## Design
 
@@ -144,9 +205,50 @@ review events should show data < todays date
 
 ## Deployment
 
-### How this site was deployed - to be written
+### How to clone the GitHub repository
+  
+  <details>
+    <summary>Steps to create a local clone</summary>
+  
+   - Go to the https://github.com/elainebroche-dev/ms3-event-scheduler repository on GitHub 
+   - Click the "Code" button to the right of the screen, click HTTPs and copy the link there
+   - Open a GitBash terminal and navigate to the directory where you want to locate the clone
+   - On the command line, type "git clone" then paste in the copied url and press the Enter key to begin the clone process
+   - Changes made to the local clone can be pushed back to the repository using the following commands :
 
-- to be written
+        - git add *filenames*  (or "." to add all changed files)
+        - git commit -m *"text message describing changes"*
+        - git push
+      
+   - N.B. Any changes pushed to the master branch will take effect on the live project because automatic deployments are enabled in Heroku for this project.
+   </details>
+   <br>
+
+### How this site was deployed to Heroku - to be written
+   
+  <details>
+    <summary>Steps to deploy</summary>
+
+  - to be written
+  - N.B. Any data changes made through the use of the application will take effect in the ms3-event-scheduler Google spreadsheet located here :  https://docs.google.com/spreadsheets/d/1-dS9LBZ54kH8T2ngIkTrf40maT9B2i80f6KnuEASd94/edit?usp=sharing 
+  </details>
+   <br>
+
+### How to connect to a different data source - to be written
+   
+  <details>
+    <summary>Steps to connect</summary>
+
+  - to be written
+  </details>
+
+
+
+
+
+
+
+
 
   The live link can be found here - [???????](to be written) 
 

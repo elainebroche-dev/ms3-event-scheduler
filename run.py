@@ -174,6 +174,10 @@ def validate_data(funcdesc, items, values):
         # once all syntax checks have been passed, next the semantic checks/
         # business rules for the data need to run - these are specific to the
         # operation being requested
+        # (the additional business rules for the CANCEL operations have been
+        # left in the cancel functions as they need to attempt to find the specific
+        # row to delete/update in the spreadsheet - it would be inefficient to
+        # scan through the spreadsheet multiple times.)
 
         if (funcdesc == 'ADD A NEW EVENT'):
             # a. event code/date combination must be unique

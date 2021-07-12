@@ -230,27 +230,36 @@ redeploy from the deploy page after each push
 ## Credits 
 
 ### Content 
-- (https://www.geeksforgeeks.org/clear-screen-python/) code to clear the screen - to be written
+- The Google spreadsheet (ms2-event-scheduler) that the application uses has the following fictious initial data which was set up manually :
+
+   <details>
+     <summary>Events Sheet</summary>
+
+     ![Events](documentation/images/initial-content-events.png)
+   </details>
+   <details>
+     <summary>Bookings Sheet</summary>
+
+     ![Bookings](documentation/images/initial-content-bookings.png)
+   </details>
+    
 
 ### Code 
-- To be written
-- (https://stackoverflow.com/questions/15509345/extracting-double-digit-months-and-days-from-a-python-date) code to return 2 digit month/day - to be written
-- (https://www.cyberciti.biz/faq/howto-get-current-date-time-in-python/) - might use this to help format
-- (https://docs.python.org/3/library/datetime.html) - help with dates
-- (https://docs.gspread.org/en/latest/user-guide.html#getting-all-values-from-a-worksheet-as-a-list-of-lists) - doc on api
-- (https://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list/4174955) - information on sort using lambda
-- (https://stackoverflow.com/questions/61285626/print-list-of-lists-in-neat-columns-table) - code to format list for printing
-- (https://docs.gspread.org/en/latest/api.html?highlight=delete%20rows#gspread.models.Worksheet.delete_rows) - referred to for gspread delete
-- (https://stackoverflow.com/questions/22304500/multiple-or-condition-in-python) - usage of 'in'
-- (https://stackoverflow.com/questions/47547403/regular-expression-for-mm-dd-yy-date-format-not-finding-any-match-in-python) - ideas on how to verify date
-- (https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/) regular expression to validate email address
-- (https://www.datacamp.com/community/tutorials/python-list-methods?utm_source=adwords_ppc&utm_campaignid=898687156&utm_adgroupid=48947256715&utm_device=c&utm_keyword=&utm_matchtype=b&utm_network=g&utm_adpostion=&utm_creative=229765585183&utm_targetid=dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9047196&gclid=CjwKCAjw_o-HBhAsEiwANqYhp7Kw0hp2dNCHcgDIIW4aLzI7CKRIUFqkaZSPoqyrk2MnuRVC7bYLbxoC3JYQAvD_BwE) - information on extend
-- (https://stackoverflow.com/questions/2084508/clear-terminal-in-python/2084521)  - info on ascii escape sequence to clear screen
+- Code on how to clear the screen came from information on this website : [Clear Screen](https://www.geeksforgeeks.org/clear-screen-python/)
+- Code to clear screen using an ASCII escape sequence came from this website: [Clear ASCII Escape](https://stackoverflow.com/questions/2084508/clear-terminal-in-python/2084521) 
+- Code on extracting 2 digt months and days from a date came from information on this website : [2 digit month and day](https://stackoverflow.com/questions/15509345/extracting-double-digit-months-and-days-from-a-python-date)
+- Code to format dates was based on information from this website : [Date Formatting](https://www.cyberciti.biz/faq/howto-get-current-date-time-in-python/)
+- Additional information on date manipulation came from this website : [Date handling](https://docs.python.org/3/library/datetime.html)
+- Information on using the gspread API came from this website : [gspread API](https://docs.gspread.org/en/latest/user-guide.html#getting-all-values-from-a-worksheet-as-a-list-of-lists) 
+- Code using a lambda function to sort came from information on this website: [Lambda Sort](https://stackoverflow.com/questions/4174941/how-to-sort-a-list-of-lists-by-a-specific-index-of-the-inner-list/4174955) 
+- Code to format data for printing in a table on screen came from information on this website : [Table Formatting](https://stackoverflow.com/questions/61285626/print-list-of-lists-in-neat-columns-table) 
+- Code on how to use gpspread API to delete rows came from this website : [gspread Delete](https://docs.gspread.org/en/latest/api.html?highlight=delete%20rows#gspread.models.Worksheet.delete_rows) 
+- Information on how to use 'in' came from this website : [In](https://stackoverflow.com/questions/22304500/multiple-or-condition-in-python) 
+- Code to help validate data values came from information on this website: [Date Validation](https://stackoverflow.com/questions/47547403/regular-expression-for-mm-dd-yy-date-format-not-finding-any-match-in-python)
+- Code to use an RE to validate format of email address came from information on this website : [Email RE](https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/)
+- Code to extend a list came from information on this website: [Extend List](https://www.datacamp.com/community/tutorials/python-list-methods?utm_source=adwords_ppc&utm_campaignid=898687156&utm_adgroupid=48947256715&utm_device=c&utm_keyword=&utm_matchtype=b&utm_network=g&utm_adpostion=&utm_creative=229765585183&utm_targetid=dsa-429603003980&utm_loc_interest_ms=&utm_loc_physical_ms=9047196&gclid=CjwKCAjw_o-HBhAsEiwANqYhp7Kw0hp2dNCHcgDIIW4aLzI7CKRIUFqkaZSPoqyrk2MnuRVC7bYLbxoC3JYQAvD_BwE) 
 
-
-### Media 
-- To be written
 
 ### Acknowledgments
 
-- To be written
+- Thank you to my mentor Brian Macharia for his ongoing help and feedback.  He has provided me with lots of tips and resources to help improve my coding and testing.  Thanks also to my tutor Kasia Bogucka for facilitating stand-ups and workshops which are always very useful for catching up with everyone and getting some really useful advice and support.

@@ -17,7 +17,7 @@ SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
 # define function to clear the screen
 def clear():
-    print("\033c")
+    print('\033c')
 
 
 def pause(function):

@@ -307,7 +307,7 @@ def add_event():
 
     if (len(event)):
         add_to_worksheet('events', event)
-        print('New event added successfully...\n')
+        print(f'New event {event} added successfully...\n')
 
 
 @pause
@@ -417,7 +417,7 @@ def add_booking():
 
     if len(booking):
         add_to_worksheet('bookings', booking)
-        print('New booking added successfully...\n')
+        print(f'New booking {booking} added successfully...\n')
 
 
 @pause

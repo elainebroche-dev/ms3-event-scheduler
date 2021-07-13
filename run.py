@@ -17,6 +17,9 @@ SHEET = GSPREAD_CLIENT.open('ms3-event-scheduler')
 
 # define function to clear the screen
 def clear():
+    """
+    clear the screen
+    """
     print('\033c')
 
 
@@ -51,6 +54,15 @@ def sub_menu(instr, list_func, add_func, cancel_func):
     """
     Display the list/add/cancel sub-menu until the user enters
     a valid choice then invoke requested function
+
+        Args:
+            instr: string: title of the sub-menu (EVENT/BOOKING)
+            list_func: function: display function to be invoked
+            add_func: function: add function to be invoked
+            cancel_func: function: cancel function to be invoked
+
+        Returns:
+            None
     """
     while True:
         clear()
@@ -88,18 +100,21 @@ def add_to_worksheet(worksheet, data):
 
 def get_data(funcdesc, items, example):
     """
-    Because a number of different operations (e.g. add booking,
-    cancel event etc) all require input from the user, which all
-    require validation and usually have data items in common, this
-    generic function has been built to be usable by all of those
-    operations.  The values passed in determine what the
-    user is asked for and how it is validated.
+    This generic function has been written to be usable by all
+    functions getting input from the user.
 
-    This function gets data input from the user.
-    Run a while loop to collect a valid string of data from the user
-    via the terminal, which must be a string of values separated by commas.
-    The loop will repeatedly request data, until it is valid or
-    user quits the operation.
+    The function contains a while loop to collect a valid string
+    of data from the user via the terminal, which must be a string
+    of values separated by commas. The loop will repeatedly request
+    data, until it is valid or user quits the operation.
+
+        Args:
+            funcdesc: string: title of the operation
+            items: list of strings: naming inputs required
+            example: string: showing example input values
+
+        Returns:
+            list of strings : validated user input
     """
     while True:
         clear()
@@ -135,6 +150,15 @@ def get_data(funcdesc, items, example):
 def validate_data(funcdesc, items, values):
     """
     Validate a list of user inputs based on a list of data items
+
+       Args:
+            funcdesc: string: title of the operation
+            items: list of strings: naming inputs required
+            values: list of string: user input values
+
+        Returns:
+            boolean : True if data satisfies validation rules
+                      otherwise False
     """
     print('\nValidating input values...\n')
     try:
@@ -300,7 +324,6 @@ def add_event():
     Capture and validate Event Code, Title, Date, Host, Capacity data
     and store in the Events Spreadsheet
     """
-    # event = get_new_event_data()
     event = get_data('ADD A NEW EVENT',
                      'Event Code, Title, Date(DD-MM-YYYY), Host, Capacity',
                      'Example: HS01, History, 29-04-2022, Joe, 15')

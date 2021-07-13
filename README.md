@@ -1,8 +1,6 @@
 <h1 align="center">Event Scheduler</h1>
 
-[View the live project here - to be written]()
-
-[Access the spreadsheet data here](https://docs.google.com/spreadsheets/d/1-dS9LBZ54kH8T2ngIkTrf40maT9B2i80f6KnuEASd94/edit?usp=sharing)
+[View the live project here](https://ms3-event-scheduler.herokuapp.com/)
 
 Event Scheduler is a command line application to manage data relating to events such as talks/lectures and bookings for those events.
 
@@ -50,62 +48,159 @@ Can create events or bookings for >= today
 review events should show data < todays date
 
 
--   __F01 To be written__
-    - To be written
 
-      ![To be written](documentation/images/f01-to be written)
+- ###  __F01 Main Menu__
+    - The main menu is displayed when the application starts.  To keep the interface simple to use and uncluttered the menu divides the functionality into three high level areas, 1) Event related actions, 2) Booking related actions, 3) Analysis/Review of data for events in the past.  
 
--   __F02 To be written__
-    - To be written
+      ![Main Menu](documentation/images/f01-main-menu-1.png)
 
-      ![To be written](documentation/images/f02-to be written)
+    - The user is prompted to choose one of the menu options by entering it's option number.  If the user enters an incorrect value an error message is displayed, then once the user presses Enter the screen is refreshed and the main menu is shown again.  
 
--   __F03 To be written__
-    - To be written
+      ![Main Menu Message](documentation/images/f01-main-menu-2.png)
 
-      ![To be written](documentation/images/f03-to be written)
+    - The main menu is repeatedly refreshed and re-displayed while inputs from the user are invalid and after each menu option 1 - 3 completes.  The application is terminated by selecting option 4 from the main menu.
 
--   __F04 To be written__
-    - To be written
+- ###  __F02 Manage Events sub-menu__
+    - From the main menu, when the user selects option 1 they are brought to the Manage Events sub-menu (see the below image).  Like the main menu, this menu is repeatedly refreshed and re-displayed while inputs from the user are invalid and after each menu option 1 - 3 completes.
 
-      ![To be written](documentation/images/f04-to be written)
+      ![Events Menu](documentation/images/f02-manage-events-submenu.png)
 
--   __F05 To be written__
-    - To be written
+    - The functions to view, add and cancel upcoming events are all accessible through this menu.  Selecting option 4 returns the user back up to the main menu (F01).
 
-      ![To be written](documentation/images/f05-to be written)
-  
--   __F06 To be written__
-    - To be written
+- ###  __F03 Show Active/Upcoming Events__
+    - If the user selects option 1 from the Manage Events sub-menu they are shown a list of events from the events spreadsheet where the scheduled date for the event >= current date.  Cancelled events are not included in the displayed list.  
+    
+    - The SEATS OPEN column values are calculated by taking the Capacity value for the event from the events spreadsheet, and then deducting all seats currently booked for that event - so the SEATS OPEN value shows how many seats are still bookable for that event.  Bookings added or cancelled while using the application will be reflected in the SEAT OPEN value when the Show Active Events option is subsequently run.
 
-      ![To be written](documentation/images/f06-to be written)
+      ![Active Events](documentation/images/f03-show-active-events.png)
 
--   __F07 To be written__
-    - To be written
+- ###  __F04 Add Event__
+    - To add a new event the user selects option 2 from the Manage Events sub-menu.  The application displays a message on screen listing the inputs it requires and displays an example input string of values (see image).
 
-      ![To be written](documentation/images/f07-to be written)
+      ![Add Event](documentation/images/f04-add-event.png)
 
--   __F08 To be written__
-    - To be written
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events menu by entering 'x'.
+    
+    - The rules for the input values are as follows :
+      - inputs are separated by commas, all inputs must have a length > 0
+      - the combination of Event Code and Date must be unique within the events spreadsheet 
+      - Date should have a format of DD-MM-YYY and must be >= current date
+      - The Capacity value must be an integer > 0
 
-      ![To be written](documentation/images/f08-to be written)
+    - When the user inputs valid data the application displays multiple messages to provide information on how the data is being processed and a new row is added to the events spreadsheet for the new event.  Once the operation is complete and the user presses Enter, they are returned to the Manage Events sub-menu.
 
--   __F09 To be written__
-    - To be written
+      ![Add Event Success](documentation/images/f04-add-event-success.png)
 
-      ![To be written](documentation/images/f09-to be written)
+    - The image below shows the new row added the end of the events spreadsheet :
 
--   __F10 To be written__
-    - To be written
+      ![Add Event Row](documentation/images/f04-add-event-spreadsheet.png)
 
-      ![To be written](documentation/images/f10-to be written)
+- ###  __F05 Cancel Event__
+    - To cancel an event the user selects option 3 from the Manage Events sub-menu.  The application displays a message on screen listing the inputs it requires and displays an example input string of values (see image). 
 
--   __F11 To be written__
-    - To be written
+      ![Cancel Event](documentation/images/f05-cancel-event.png)
 
-      ![To be written](documentation/images/f11-to be written)
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events menu by entering 'x'.
+    
+    - The rules for the input values are as follows :
+      - inputs are separated by commas, all inputs must have a length > 0
+      - Date should have a format of DD-MM-YYY and must be >= current date (events that have already happened cannot be cancelled)
+      - The Event Code and Date combination must exist as an active (not already cancelled) event in the spreadsheet
 
-- __How these features support the User Stories__
+    - When the user inputs valid data the application displays messages to provide information on how the data is being processed.  Cancelled events are not deleted from the events spreadsheet, instead they are updated to have a value of 'cancelled' in the Status column and the input Reason string provided by the user is stored in the Reason column of the spreadsheet.
+
+    - Cancelling an event has the side-effect of deleting all associated bookings for the event from the bookings spreadsheet.   During the cancel event operation the bookings effected are listed on screen to let the user know what bookings have been removed and prompt them to contact attendees to inform them.
+    
+    - Once the operation is complete and the user presses Enter, they are returned to the Manage Events sub-menu.  
+
+      ![Cancel Event Success](documentation/images/f05-cancel-event-success.png)
+
+    - The image below shows a section of the events spreadsheet with the cancelled event :
+
+      ![Cancel Event Row](documentation/images/f05-cancel-event-spreadsheet.png)
+
+- ###  __F06 Manage Bookings sub-menu__
+    - From the main menu, when the user selects option 2 they are brought to the Manage Bookings sub-menu (see the below image).  Like the main menu, this menu is repeatedly refreshed and re-displayed while inputs from the user are invalid and after each menu option 1 - 3 completes.  Selecting option 4 returns the user back up to the main menu (F01).
+
+      ![Bookings Menu](documentation/images/f06-manage-bookings-submenu.png)
+
+    - The functions to view, add and cancel bookings for upcoming events are all accessible through this menu.  
+
+- ###  __F07 Show Active/Upcoming Bookings__
+    - If the user selects option 1 from the Manage Bookings sub-menu they are shown a list of bookings from the bookings spreadsheet where the scheduled date for the event >= current date.   The data shows the Event Code, Date of the event, Name of person who booked, Email address and number of seats for this booking.  
+
+      ![Active Bookings](documentation/images/f07-show-active-bookings.png)
+
+- ###  __F08 Add Booking__
+    - To add a new booking for an event the user selects option 2 from the Manage Bookings sub-menu.  The application displays a message on screen listing the inputs it requires and displays an example input string of values (see image).
+
+      ![Add Booking](documentation/images/f08-add-booking.png)
+
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings menu by entering 'x'.
+    
+    - The rules for the input values are as follows :
+      - inputs are separated by commas, all inputs must have a length > 0
+      - the combination of Event Code and Date must exist in the events spreadsheet and must be active (not cancelled) 
+      - Date should have a format of DD-MM-YYY and must be >= current date
+      - Email address must have a valid format - e.g. contain @ with alphanumerics on either side
+      - The Seats value must be an integer > 0 and must not exceed the number of seats available (calculated as the event Capacity from the events spreadsheet minus total seats reserved on all existing bookings for this event)
+
+    - When the user inputs valid data the application displays multiple messages to provide information on how the data is being processed and a new row is added to the bookings spreadsheet for the new booking.  Once the operation is complete and the user presses Enter, they are returned to the Manage Bookings sub-menu.
+
+    - Duplicate bookings are allowed - the same person can make multiple bookings for a single event. 
+
+      ![Add Booking Success](documentation/images/f08-add-booking-success.png)
+
+    - The image below shows a section of the bookings spreadsheet with the new row added :
+
+      ![Add Booking Row](documentation/images/f08-add-booking-spreadsheet.png)
+
+- ###  __F09 Cancel Booking__
+    - To cancel a booking the user selects option 3 from the Manage Bookings sub-menu.  The application displays a message on screen listing the inputs it requires and displays an example input string of values (see image). 
+
+      ![Cancel Booking](documentation/images/f09-cancel-booking.png)
+
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings menu by entering 'x'.
+    
+    - The rules for the input values are as follows :
+      - inputs are separated by commas, all inputs must have a length > 0
+      - Date should have a format of DD-MM-YYY and must be >= current date (bookings for past events cannot be cancelled)
+      - The Event Code, Date and Email combination must exist in the bookings spreadsheet
+
+    - When the user inputs valid data the application displays messages to provide information on how the data is being processed.  Cancelled bookings are deleted from the bookings spreadsheet.
+    
+    - Once the operation is complete and the user presses Enter, they are returned to the Manage Bookings sub-menu.  
+
+      ![Cancel Booking Success](documentation/images/f09-cancel-booking-success.png)
+
+- ###  __F10 Review Past Events__
+    - From the main menu, when the user selects option 3 the Review Past Events functionality runs.  This feature examines all events with a Date < current date and also examines associated bookings.  On screen the following information is derived from the data and displayed to the user :
+
+      - A table listing of all cancelled events which includes the Reason column 
+      - A table listing of all events that went ahead which includes columns showing capacity of the event, the total seats booked and total seats booked as a percentage of capacity.
+      - Numeric total of cancelled events
+      - Numeric total of events that went ahead
+
+      ![To be written](documentation/images/f10-review-past-events.png)
+
+- ###  __F011 User prompts and messages__ 
+    - The user is given feedback regularly to let them know the status of processing and what the application is attempting to do.  To keep the terminal as uncluttered as possible, the screen is cleared after each operation (e.g. add or cancel), on each transition to a new menu and each time the user needs to re-enter data.  Functionality to pause processing and allow the user time to review the feedback before clearing the screen has been added -  the user is asked to "Press Enter to continue"  before the clear screen happens and the application moves on.
+
+    - Examples of the messages that are displayed on successful execution of actions such as Review Past Events or Add Booking etc. are shown in the screen shots detailing the features above.   In addition, the application displays a range of error messages specific to error type when attempting data validation.  Some examples are below :
+
+    - Example of error message displayed if the user does not enter the correct number of inputs :
+
+      ![User Messages 1](documentation/images/f11-user-messages-1.png)
+
+    - Example of error message displayed if the user enters an invalid date value :
+
+      ![User Messages 2](documentation/images/f11-user-messages-2.png)
+
+    - Example of error message displayed if the user attempts to cancel an event in the past :
+
+      ![User Messages 3](documentation/images/f11-user-messages-3.png)
+
+- ### __How these features support the User Stories__
 
     - The User Stories in the [User Experience (UX)](#user-experience-ux) part of this document are numbered 1 to 10.  The existing features are listed above as F01 to F11.  Below is a traceability matrix cross-referencing the user stories with the features, illustrating which features support which stories :
 

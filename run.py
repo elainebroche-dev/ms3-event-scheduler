@@ -37,7 +37,7 @@ def table_print(list):
     a table with dividers between each column
     """
     # transpose the list, get the max of each column and
-    # store in col_lens as dict[column]=legnth
+    # store in col_lens as dict[column]=length
     col_len = {i: max(map(len, inner)) for i, inner in enumerate(zip(*list))}
 
     # print using the column index from enumerate to lookup this columns length

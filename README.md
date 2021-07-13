@@ -41,20 +41,12 @@ The event and booking data is stored in an external Google Spreadsheet.
 
 ### Existing Features
 
-how do I want dates to work ? - this needs to go into the readme to clarify
-upcoming should show today and the future for both bookings and events
-Can cancel events or bookings for >= today
-Can create events or bookings for >= today
-review events should show data < todays date
-
-
-
 - ###  __F01 Main Menu__
-    - The main menu is displayed when the application starts.  To keep the interface simple to use and uncluttered the menu divides the functionality into three high level areas, 1) Event related actions, 2) Booking related actions, 3) Analysis/Review of data for events in the past.  
+    - The main menu is displayed when the application starts.  To keep the interface simple to use and uncluttered the menu divides the functionality into three high level areas : 1) Event related actions, 2) Booking related actions, 3) Analysis/Review of data for events in the past.  
 
       ![Main Menu](documentation/images/f01-main-menu-1.png)
 
-    - The user is prompted to choose one of the menu options by entering it's option number.  If the user enters an incorrect value an error message is displayed, then once the user presses Enter the screen is refreshed and the main menu is shown again.  
+    - The user is prompted to choose one of the menu options by entering the option number.  If the user enters an incorrect value an error message is displayed, then once the user presses Enter the screen is refreshed and the main menu is shown again.  
 
       ![Main Menu Message](documentation/images/f01-main-menu-2.png)
 
@@ -181,7 +173,7 @@ review events should show data < todays date
       - Numeric total of cancelled events
       - Numeric total of events that went ahead
 
-      ![To be written](documentation/images/f10-review-past-events.png)
+      ![Review Past Events](documentation/images/f10-review-past-events.png)
 
 - ###  __F011 User prompts and messages__ 
     - The user is given feedback regularly to let them know the status of processing and what the application is attempting to do.  To keep the terminal as uncluttered as possible, the screen is cleared after each operation (e.g. add or cancel), on each transition to a new menu and each time the user needs to re-enter data.  Functionality to pause processing and allow the user time to review the feedback before clearing the screen has been added -  the user is asked to "Press Enter to continue"  before the clear screen happens and the application moves on.
@@ -325,7 +317,8 @@ review events should show data < todays date
     <summary>Steps to deploy</summary>
 
   - to be written
-  - N.B. Any data changes made through the use of the application will take effect in the ms3-event-scheduler Google spreadsheet located here :  https://docs.google.com/spreadsheets/d/1-dS9LBZ54kH8T2ngIkTrf40maT9B2i80f6KnuEASd94/edit?usp=sharing 
+  - N.B. Any data changes made through the use of the application will take effect in the ms3-event-scheduler Google spreadsheet.
+  
   </details>
    <br>
 
@@ -403,26 +396,6 @@ Address for this deployed app is ()
 redeploy from the deploy page after each push
 
 
-
-
-
-
-
-
-
-### How to clone the repository - to be written
-
-- Go to the https://github.com/elainebroche-dev/ms2-anagram repository on GitHub 
-- Click the "Code" button to the right of the screen, click HTTPs and copy the link there
-- Open a GitBash terminal and navigate to the directory where you want to locate the clone
-- On the command line, type "git clone" then paste in the copied url and press the Enter key to begin the clone process
-- Changes made to the local clone can be pushed back to the repository using the following commands :
-
-  - git add *filenames*  (or "." to add all changed files)
-  - git commit -m *"text message describing changes"*
-  - git push
-
-- N.B. Any changes pushed to the master branch will take effect on the live project
 
 ## Credits 
 

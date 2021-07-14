@@ -21,14 +21,14 @@ The event and booking data is stored in an external Google Spreadsheet.
 
 -   ### User stories - as a user I want to be able to :
 
-  1. Easily navigate between the different functions availabe in the application.
-  2. View information on upcoming scheduled events in the events spreadsheet - event ID code, title, scheduled date, host and number of seats available to book
+  1. Easily navigate between the different functions available in the application.
+  2. View information on upcoming scheduled events in the events spreadsheet.
   3. Use the application to book new events and have these stored in the events spreadsheet.  
   4. Cancel events and log a reason for cancellation in the events spreadsheet.
   5. Automatically remove all bookings linked to a cancelled event from the bookings spreadsheet and return a list on screen of those details so that attendees can be notified.
-  6. View information on bookings for upcoming scheduled events - event ID code, scheduled date, attendee name, attendee email, number of seats booked
+  6. View information on bookings for upcoming scheduled events.
   7. Add a new booking for an upcoming event.
-  8. Cancel a booking in the bookings spreadsheet.
+  8. Cancel a booking for an upcoming event.
   9. Review and analyse data for past events, this information should include :
       - details on cancelled events including the reason given for cancellation
       - details on events that went ahead including the number of seats that were available and % seats booked 
@@ -71,12 +71,12 @@ The event and booking data is stored in an external Google Spreadsheet.
 
       ![Add Event](documentation/images/f04-add-event.png)
 
-    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events menu by entering 'x'.
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events sub-menu by entering 'x'.
     
     - The rules for the input values are as follows :
       - inputs are separated by commas, all inputs must have a length > 0
       - the combination of Event Code and Date must be unique within the events spreadsheet 
-      - Date should have a format of DD-MM-YYY and must be >= current date
+      - Date should have a format of DD-MM-YYYY and must be >= current date
       - The Capacity value must be an integer > 0
 
     - When the user inputs valid data the application displays multiple messages to provide information on how the data is being processed and a new row is added to the events spreadsheet for the new event.  Once the operation is complete and the user presses Enter, they are returned to the Manage Events sub-menu.
@@ -92,20 +92,20 @@ The event and booking data is stored in an external Google Spreadsheet.
 
       ![Cancel Event](documentation/images/f05-cancel-event.png)
 
-    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events menu by entering 'x'.
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Events sub-menu by entering 'x'.
     
     - The rules for the input values are as follows :
       - inputs are separated by commas, all inputs must have a length > 0
-      - Date should have a format of DD-MM-YYY and must be >= current date (events that have already happened cannot be cancelled)
+      - Date should have a format of DD-MM-YYYY and must be >= current date (events that have already happened cannot be cancelled)
       - The Event Code and Date combination must exist as an active (not already cancelled) event in the spreadsheet
 
     - When the user inputs valid data the application displays messages to provide information on how the data is being processed.  Cancelled events are not deleted from the events spreadsheet, instead they are updated to have a value of 'cancelled' in the Status column and the input Reason string provided by the user is stored in the Reason column of the spreadsheet.
 
     - Cancelling an event has the side-effect of deleting all associated bookings for the event from the bookings spreadsheet.   During the cancel event operation the bookings effected are listed on screen to let the user know what bookings have been removed and prompt them to contact attendees to inform them.
-    
-    - Once the operation is complete and the user presses Enter, they are returned to the Manage Events sub-menu.  
 
       ![Cancel Event Success](documentation/images/f05-cancel-event-success.png)
+
+    - Once the operation is complete and the user presses Enter, they are returned to the Manage Events sub-menu.  
 
     - The image below shows a section of the events spreadsheet with the cancelled event :
 
@@ -128,12 +128,12 @@ The event and booking data is stored in an external Google Spreadsheet.
 
       ![Add Booking](documentation/images/f08-add-booking.png)
 
-    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings menu by entering 'x'.
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings sub-menu by entering 'x'.
     
     - The rules for the input values are as follows :
       - inputs are separated by commas, all inputs must have a length > 0
       - the combination of Event Code and Date must exist in the events spreadsheet and must be active (not cancelled) 
-      - Date should have a format of DD-MM-YYY and must be >= current date
+      - Date should have a format of DD-MM-YYYY and must be >= current date
       - Email address must have a valid format - e.g. contain @ with alphanumerics on either side
       - The Seats value must be an integer > 0 and must not exceed the number of seats available (calculated as the event Capacity from the events spreadsheet minus total seats reserved on all existing bookings for this event)
 
@@ -152,18 +152,20 @@ The event and booking data is stored in an external Google Spreadsheet.
 
       ![Cancel Booking](documentation/images/f09-cancel-booking.png)
 
-    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings menu by entering 'x'.
+    - If the inputs entered by the user do not meet the validation requirements the user will be asked to re-enter them, or they can quit the operation and return to the Manage Bookings sub-menu by entering 'x'.
     
     - The rules for the input values are as follows :
       - inputs are separated by commas, all inputs must have a length > 0
-      - Date should have a format of DD-MM-YYY and must be >= current date (bookings for past events cannot be cancelled)
+      - Date should have a format of DD-MM-YYYY and must be >= current date (bookings for past events cannot be cancelled)
       - The Event Code, Date and Email combination must exist in the bookings spreadsheet
 
     - When the user inputs valid data the application displays messages to provide information on how the data is being processed.  Cancelled bookings are deleted from the bookings spreadsheet.
-    
-    - Once the operation is complete and the user presses Enter, they are returned to the Manage Bookings sub-menu.  
+
+    - As noted in the description of the Add Booking feature above (F08), duplicate bookings are allowed as the same person could make multiple bookings for a single event.  In this case, the Cancel Booking operation will only delete one booking - the first one it finds in the booking spreadsheet - and leave the remaining booking rows as they are.
 
       ![Cancel Booking Success](documentation/images/f09-cancel-booking-success.png)
+
+    - Once the operation is complete and the user presses Enter, they are returned to the Manage Bookings sub-menu.  
 
 - ###  __F10 Review Past Events__
     - From the main menu, when the user selects option 3 the Review Past Events functionality runs.  This feature examines all events with a Date < current date and also examines associated bookings.  On screen the following information is derived from the data and displayed to the user :
@@ -206,7 +208,7 @@ The event and booking data is stored in an external Google Spreadsheet.
 
 - __Extended Data Model__
 
-  The data model representing the Events and Bookings is very simplistic in what data elements it stores.  This could be extended to store additional data with more complex data relationship rules.  The data model and code could also be re-structured to use a better Object Oriented approach, where Events and Bookings could be handled as Object types with methods and attributes.
+  The data model representing the Events and Bookings is very simplistic in terms of the data elements it stores.  This could be extended to store additional data with more complex data relationship rules.  The data model and code could also be re-structured to use a better Object Oriented approach, where Events and Bookings could be handled as Object types with methods and attributes.
 
 - __Extended Data Analysis__
 
@@ -311,7 +313,6 @@ The event and booking data is stored in an external Google Spreadsheet.
 
    - N.B. Any data changes made through the use of the application will take effect in the live project ms3-event-scheduler Google spreadsheet.
    </details>
-   <br>
 
 ### How to create and configure the Google spreadsheet and APIs
   
@@ -352,7 +353,7 @@ The event and booking data is stored in an external Google Spreadsheet.
         - Select the JSON radio button then click Create. The json file with the new API credentials will download your machine. 
         - Rename the downloaded file to creds.json.  This filename is already listed in the project .gitignore file and so no further action will be needed to prevent it being accidentally uploaded to github 
         - Copy the new creds.json file into the local clone
-        - In the creds.json file, copy the value for "client email" and then on Google Drive, share the spreadsheet with this email address assigning a role of Editor similar to the image shown below :
+        - In the creds.json file, copy the value for "client email" and then on Google Drive, share the spreadsheet created above with this email address assigning a role of Editor similar to the image shown below :
 
           ![Share Spreadsheet](documentation/images/share-google-spreadsheet.png)
 
@@ -366,7 +367,6 @@ The event and booking data is stored in an external Google Spreadsheet.
   - Install gspread and google-auth libraries in the development environment using the command 'pip3 install gspread google-auth'
   
   </details>
-  <br>
 
 ### How this site was deployed to Heroku 
    
@@ -394,12 +394,11 @@ Automatic Deploy was selected.
   - The live link for this project is (https://ms3-event-scheduler.herokuapp.com/)
 
  </details>
- <br>
 
 ## Credits 
 
 ### Content 
-- The Google spreadsheet (ms2-event-scheduler) that the application uses has the following fictious initial data which was set up manually :
+- The Google spreadsheet (ms2-event-scheduler) that the application uses has the following fictitious initial data which was set up manually :
 
    <details>
      <summary>Events Sheet</summary>
@@ -416,7 +415,7 @@ Automatic Deploy was selected.
 ### Code 
 - Code on how to clear the screen came from information on this website : [Clear Screen](https://www.geeksforgeeks.org/clear-screen-python/)
 - Code to clear screen using an ASCII escape sequence came from this website: [Clear ASCII Escape](https://stackoverflow.com/questions/2084508/clear-terminal-in-python/2084521) 
-- Code on extracting 2 digt months and days from a date came from information on this website : [2 digit month and day](https://stackoverflow.com/questions/15509345/extracting-double-digit-months-and-days-from-a-python-date)
+- Code on extracting 2 digit months and days from a date came from information on this website : [2 digit month and day](https://stackoverflow.com/questions/15509345/extracting-double-digit-months-and-days-from-a-python-date)
 - Code to format dates was based on information from this website : [Date Formatting](https://www.cyberciti.biz/faq/howto-get-current-date-time-in-python/)
 - Additional information on date manipulation came from this website : [Date handling](https://docs.python.org/3/library/datetime.html)
 - Information on using the gspread API came from this website : [gspread API](https://docs.gspread.org/en/latest/user-guide.html#getting-all-values-from-a-worksheet-as-a-list-of-lists) 

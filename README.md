@@ -308,94 +308,93 @@ The event and booking data is stored in an external Google Spreadsheet.
         - git push
       
    - N.B. Any changes pushed to the master branch will take effect on the live project because automatic deployments are enabled in Heroku for this project.
+
+   - N.B. Any data changes made through the use of the application will take effect in the live project ms3-event-scheduler Google spreadsheet.
    </details>
    <br>
 
-### How this site was deployed to Heroku - to be written
-   
+### How to create and configure the Google spreadsheet and APIs
+  
   <details>
-    <summary>Steps to deploy</summary>
+    <summary>Steps to setup and configure access to data</summary>
 
-  - to be written
-  - N.B. Any data changes made through the use of the application will take effect in the ms3-event-scheduler Google spreadsheet.
+  - Create the Google Spreadsheet 
+
+     - Log in to your Google account (create one if necessary)
+     - Create a Google Spreadsheet called 'ms3-event-scheduler' on Google Drive with 2 pages/sheets, one called 'events' and one called 'bookings'.  
+     - In row 1 of the events sheet, enter the headings : Event Code, Event Name, Date, Host, Capacity, Status Reason.
+     - In row 1 of the bookings sheet, enter the headings : Event Code, Date, Name, Email, Seats
+     - The initial sample data used in this project can be seen here, however it is not necessary to use that data : [Content](#content)
+
+  - Set up APIs using the Google Cloud Platform
+
+     - Access the [Google Cloud Platform](https://console.cloud.google.com/)
+     - Create a new project and give it a unique name, then select the project to go to the project dashboard
+     - Setup Google Drive credentials 
+
+        - Click on the hamburger menu in the top left of the screen to access the navigation menu
+        - On the left hand menu select 'APIs and Services' and then 'Library'
+        - Search for Google Drive API
+        - Select Google Drive API and click on 'enable' to get to the API and Services Overview page 
+        - Click on the Create Credentials button near the top left of the screen
+        - Select 'Google Drive' API from the dropdown for 'Credential Type'
+        - Select the 'Application Data' radio button in the 'What data will you be accessing' area
+        - Select the 'No, I'm not using them' for the 'Are you planning to use this API with Compute Engine, Kubernetes Engine, App Engine, or Cloud Functions?' area
+        - Cick Next
+        - On the Create Service Account page, step 1 is to enter a service account name in the first text box.  Any value can be entered here.
+        - Click on 'Create and Continue'
+        - On step 2, 'Grant this service account access to project',  select Basic -> Editor from the 'Select a Role' dropdown.
+        - Click on Continue
+        - On step 3, 'Grant users access to this service account', simply press Done, no input is necessary
+        - On the next page, click on the service account name created (listed under the Service Accounts area) to go to the configuration page for the new service account.
+        - Click on the KEYS tab at the top middle of the screen.
+        - Click on the Add Key dropdown and select Create New Key.
+        - Select the JSON radio button then click Create. The json file with the new API credentials will download your machine. 
+        - Rename the downloaded file to creds.json.  This filename is already listed in the project .gitignore file and so no further action will be needed to prevent it being accidentally uploaded to github 
+        - Copy the new creds.json file into the local clone
+        - In the creds.json file, copy the value for "client email" and then on Google Drive, share the spreadsheet with this email address assigning a role of Editor similar to the image shown below :
+
+          ![Share Spreadsheet](documentation/images/share-google-spreadsheet.png)
+
+     - Enable Google Sheets API 
+        
+        - Go back to the dashboard for the project on Google Cloud Platform and access the navigation menu as before
+        - On the left hand menu select 'APIs and Services' and then 'Library'
+        - Search for Google Sheets API
+        - Select Google Sheets API and click on 'enable'
+
+  - Install gspread and google-auth libraries in the development environment using the command 'pip3 install gspread google-auth'
   
   </details>
-   <br>
+  <br>
 
-### How to connect to a different data source - to be written
+### How this site was deployed to Heroku 
    
   <details>
-    <summary>Steps to connect</summary>
+    <summary>Steps followed to deploy</summary>
 
-  - to be written
-  </details>
+  - The requirements.txt file in the project was updated to include details on the project dependencies. Steps to do this are :
 
+    -  Enter the following command at the terminal prompt : 'pip3 freeze > requirements.txt'
+    -  Commit resulting changes to requirements.txt and push to github
 
+  - Log in to [Heroku](https://heroku.com/), create an account if necessary.
+  - From the Heroku dashboard, click the Create new app button.  For a new account an icon will be visible on screen to allow you to Create an app, otherwise a link to this function is located under the New dropdown menu at the top right of the screen.
+  - On the Create New App page, enter a unique name for the application and select region.  Then click Create app.
+  - You will then be brought to the Application Configuration page for your new app.  Changes are needed here on the Settings and Deploy tabs.
+  - Click on the Settings tab and then scroll down to the Config Vars section to set up the private Environment Variables for the application - i.e. the credentials used by the application to access the spreadsheet data.
+  - Click on Reveal Config Vars.  In the field for key enter 'CREDS' and paste the entire contents of the creds.json file into the VALUE field and click ADD. A description on the creation of the creds.json file is documented in  [How to create and configure the Google spreadsheet and APIs](#how-to-create-and-configure-the-google-spreadsheet-and-apis) above.
+  - Next, scroll down the Settings page to Buildpacks.  Click Add buildpack, select Python from the pop up window and click on Save changes.  Click Add buildpack again, select Node.js from the pop up window and click on Save changes.  It is important that the buildpacks are listed Python first, then Node.js beneath.
+  - Click on the Deploy tab on the Application Configuration page.
+  - Select GitHub as the Deployment Method and if prompted, confirm that you want to connect to GitHub.  Enter the name of the github
+repository (the one used for this project is https://github.com/elainebroche-dev/ms3-event-scheduler) and click on Connect to link up the Heroku app to the GitHub repository code.
+  - Scroll down the page and choose to either Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project
+Automatic Deploy was selected.
+  - The application can be run from the Application Configuration page by clicking on the Open App button.
+  - The live link for this project is (https://ms3-event-scheduler.herokuapp.com/)
 
-
-
-
-
-
-
-  The live link can be found here - [???????](to be written) 
-
-
-  notes on deployment :
-  usual git stuff needed
-
-The Code Institute Python Essentials template was used to build the project Gitpod workspace.  This template
-includes files and code to support deployment in a mock terminal on a web page.
-
-A newline character was added to the end of each string used with the input function because due to how the
-software to create the mock terminal works, the newline is needed so that the text for the input request shows
-on screen.
-
-The requirements.txt file in the project was updated to include details on the project dependencies.
-Steps to do this are :
-
-1. Enter the following command at the terminal prompt : 'pip3 freeze > requirements.txt'
-2. Commit resulting changes to requirements.txt and push to github
-
-Login to your Heroku account.  If you don't have one, create one on www.heroku.com.  Enter your name, email and 'Student' can be selected for the Role value.  Choose a value for Country based on your location and select "Python" as the Primary development language.  
-
-Once the Create button has been clicked, Heroku will send a confirmation email, to complete account creation click on
-the link in this email.
-
-Heroku will then bring you to a page to set up your password and log in.
-
-Accept the Heroku terms of service and then you will be brought to the dashboard for your account.
-
-If this is a new account an icon will be visible on screen to allow you to Create an app, alternatively you can find a link to this function under the New dropdown menu at the top right of the screen.
-
-From the Heroku dashboard, click the Create new app button.
-
-On the Create New App page, enter a unique name for the application and select your region.  Then click Create app.
-
-You will then be brought to the application configuration page for your new app.  The important tabs on this page are Deploy and Settings.
-
-Click on the Settings tab and then scroll down to the Config Vars section to set up the private Environment Variables for the application - i.e. the credentials used by our application to access the spreadsheet data.
-
-*** Be careful here !!! we need details on how exactly to create the creds.json file as this is not something that is available
-to someone other than ourselves - so need to back up here on this *****
-Click on Reveal Config Vars.  In the field for key enter 'CREDS' and paste the entire contents of the creds.json file into the VALUE field and click ADD
-
-Next, scroll down the Settings page to Buildpacks.  Click Add buildpack, select Python from the pop up window and click on Save changes.  Click Add buildpack again, select Node.js from the pop up window and click on Save changes.  It is important that the buildpacks are listed on the page in the order shown in the diagram.
-
-Now go to the Deploy tab for the application configuration.
-
-Select GitHub as the Deployment Method and if prompted, confirm that you want to connect to GitHub.  Enter the name of the github
-repository (ms3-event-scheduler) and click on Connect to link up the Heroku app to the GitHub repository code.
-
-Scroll down the page and decide if you want to Automatically Deploy each time changes are pushed to GitHub, or Manually deploy - for this project.
-Manual Deploy was selected and then Deploy Branch clicked. Log messages displayed to show the build messages.
-
-Click on View to launch the application.
-Address for this deployed app is ()
-
-redeploy from the deploy page after each push
-
-
+ </details>
+ <br>
 
 ## Credits 
 

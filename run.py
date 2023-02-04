@@ -26,7 +26,7 @@ def clear():
 def pause(function):
     """
     decorator to give the user an opportunity to review feedback on screen
-    before moving on by pressing Enter
+    before moving on by pressing Enter 
     """
     def wrapper():
         function()
